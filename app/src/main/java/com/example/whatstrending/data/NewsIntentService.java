@@ -3,23 +3,26 @@ package com.example.whatstrending.data;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.util.Log;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
+import com.example.whatstrending.network.NewsApiService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class NewsIntentService extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.example.whatstrending.data.action.FOO";
-    private static final String ACTION_BAZ = "com.example.whatstrending.data.action.BAZ";
 
-    // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.example.whatstrending.data.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.example.whatstrending.data.extra.PARAM2";
+    private static final String TAG = NewsIntentService.class.getSimpleName();
+    private static final String NEWS_API_BASE_URL = "https://newsapi.org/v2/";
+
+    private static final String ACTION_GET_TOP_HEADLINES = "com.example.whatstrending.data.action.GET_TOP_HEADLINES";
+
+    private static final String EXTRA_COUNTRY_CODE = "com.example.whatstrending.data.extra.COUNTRY_CODE";
 
     public NewsIntentService() {
         super("NewsIntentService");
@@ -31,27 +34,10 @@ public class NewsIntentService extends IntentService {
      *
      * @see IntentService
      */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
+    public static void startActionGetTopHeadlines(Context context, String countryCode) {
         Intent intent = new Intent(context, NewsIntentService.class);
-        intent.setAction(ACTION_FOO);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
-
-    /**
-     * Starts this service to perform action Baz with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, NewsIntentService.class);
-        intent.setAction(ACTION_BAZ);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
+        intent.setAction(ACTION_GET_TOP_HEADLINES);
+        intent.putExtra(EXTRA_COUNTRY_CODE, countryCode);
         context.startService(intent);
     }
 
@@ -59,14 +45,9 @@ public class NewsIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
+            if (ACTION_GET_TOP_HEADLINES.equals(action)) {
+                final String countryCode = intent.getStringExtra(EXTRA_COUNTRY_CODE);
+                handleActionGetTopHeadlines(countryCode);
             }
         }
     }
@@ -75,17 +56,27 @@ public class NewsIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+    private void handleActionGetTopHeadlines(String countryCode) {
 
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionBaz(String param1, String param2) {
-        // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(NEWS_API_BASE_URL)
+                .addConverterFactory(
+                        GsonConverterFactory.create(
+                                new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
+                .build();
+
+        NewsApiService service = retrofit.create(NewsApiService.class);
+
+        service.getTopHeadlines("us").enqueue(new Callback<NewsApiResponse>() {
+            @Override
+            public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
+                Log.i(TAG, "Success contacting API");
+            }
+
+            @Override
+            public void onFailure(Call<NewsApiResponse> call, Throwable t) {
+                Log.e(TAG, "Error contacting API: " + t.toString());
+            }
+        });
     }
 }
