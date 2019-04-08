@@ -8,11 +8,12 @@ import android.arch.persistence.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Article.class,
-        parentColumns = "id",
-        childColumns = "article_id",
-        onDelete = ForeignKey.CASCADE))
+@Entity(tableName = "sources",
+        foreignKeys = @ForeignKey(
+            entity = Article.class,
+            parentColumns = "id",
+            childColumns = "article_id",
+            onDelete = ForeignKey.CASCADE))
 public class Source {
 
     @ColumnInfo(name = "row_id")
