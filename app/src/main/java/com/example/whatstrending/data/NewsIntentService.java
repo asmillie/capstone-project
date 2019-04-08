@@ -9,6 +9,8 @@ import com.example.whatstrending.network.NewsApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,6 +73,13 @@ public class NewsIntentService extends IntentService {
             @Override
             public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                 Log.i(TAG, "Success contacting API");
+                if (response.body() != null && response.body().getArticles() != null) {
+                    List<Article> articles = response.body().getArticles();
+                    if (articles.size() > 0) {
+                        Log.i(TAG, "Article List contains items, attempting to save");
+                        AppRepository.getInstance(NewsIntentService.this).saveArticles(articles);
+                    }
+                }
             }
 
             @Override

@@ -1,6 +1,7 @@
 package com.example.whatstrending.data;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -14,6 +15,7 @@ public class Article {
 
     @SerializedName("source")
     @Expose
+    @Ignore
     private Source source;
     @SerializedName("author")
     @Expose

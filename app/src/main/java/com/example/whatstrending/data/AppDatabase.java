@@ -30,4 +30,5 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract ArticleDao articleDao();
+    public abstract ArticleWithSourceDao articleWithSourceDao();
 }
