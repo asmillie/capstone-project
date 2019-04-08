@@ -1,9 +1,14 @@
 package com.example.whatstrending.data;
 
+import android.arch.persistence.room.Entity;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Article {
+
+    private int id;
 
     @SerializedName("source")
     @Expose
@@ -29,6 +34,14 @@ public class Article {
     @SerializedName("content")
     @Expose
     private String content;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Source getSource() {
         return source;
