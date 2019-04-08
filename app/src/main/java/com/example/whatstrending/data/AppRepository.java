@@ -1,6 +1,11 @@
 package com.example.whatstrending.data;
 
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
+
+import com.example.whatstrending.AppExecutors;
+
+import java.util.List;
 
 public class AppRepository {
 
@@ -9,8 +14,15 @@ public class AppRepository {
     private static final Object LOCK = new Object();
     private static AppRepository sInstance;
 
+    private final AppDatabase mDatabase;
+
+    private Context mContext;
+
     private AppRepository(Context context) {
-        NewsIntentService.startActionGetTopHeadlines(context, "us");
+        mDatabase = AppDatabase.getInstance(context);
+        mContext = context;
+        ///TODO: Remove test call
+        getAllArticles();
     }
 
     //Singleton instantiation of Repository
@@ -21,5 +33,31 @@ public class AppRepository {
             }
         }
         return sInstance;
+    }
+
+    public LiveData<List<Article>> getAllArticles() {
+        LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
+        if (isArticleListEmpty(articles)) {
+            NewsIntentService.startActionGetTopHeadlines(mContext, "us");
+        }
+        return mDatabase.articleDao().getAllArticles();
+    }
+
+    public void saveArticles(final List<Article> articles) {
+        if (articles != null && !articles.isEmpty()) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDatabase.articleDao().saveArticles(articles);
+                }
+            });
+        }
+    }
+
+    ////// Private Methods //////
+
+    private boolean isArticleListEmpty(LiveData<List<Article>> articles) {
+        List<Article> articleList = articles.getValue();
+        return articleList != null && !articleList.isEmpty();
     }
 }
