@@ -16,6 +16,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'NEWSAPI_API_KEY', newsApiKey
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8 //Required to use okhttp logging interceptor
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
