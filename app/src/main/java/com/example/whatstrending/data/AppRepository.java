@@ -10,7 +10,7 @@ public class AppRepository {
     private static AppRepository sInstance;
 
     private AppRepository(Context context) {
-
+        NewsIntentService.startActionGetTopHeadlines(context, "us");
     }
 
     //Singleton instantiation of Repository

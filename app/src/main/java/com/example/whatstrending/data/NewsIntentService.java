@@ -66,8 +66,8 @@ public class NewsIntentService extends IntentService {
                 .build();
 
         NewsApiService service = retrofit.create(NewsApiService.class);
-
-        service.getTopHeadlines("us").enqueue(new Callback<NewsApiResponse>() {
+        //TODO: Move country code to Constants & add Utils method to verify codes
+        service.getTopHeadlines(countryCode).enqueue(new Callback<NewsApiResponse>() {
             @Override
             public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                 Log.i(TAG, "Success contacting API");
