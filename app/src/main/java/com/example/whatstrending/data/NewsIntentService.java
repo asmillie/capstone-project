@@ -25,6 +25,7 @@ public class NewsIntentService extends IntentService {
     private static final String ACTION_GET_TOP_HEADLINES = "com.example.whatstrending.data.action.GET_TOP_HEADLINES";
 
     private static final String EXTRA_COUNTRY_CODE = "com.example.whatstrending.data.extra.COUNTRY_CODE";
+    private static final String EXTRA_PAGE_SIZE = "com.example.whatstrending.data.extra.PAGE_SIZE";
 
     public NewsIntentService() {
         super("NewsIntentService");
@@ -36,10 +37,11 @@ public class NewsIntentService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionGetTopHeadlines(Context context, String countryCode) {
+    public static void startActionGetTopHeadlines(Context context, String countryCode, int pageSize) {
         Intent intent = new Intent(context, NewsIntentService.class);
         intent.setAction(ACTION_GET_TOP_HEADLINES);
         intent.putExtra(EXTRA_COUNTRY_CODE, countryCode);
+        intent.putExtra(EXTRA_PAGE_SIZE, pageSize);
         context.startService(intent);
     }
 
@@ -49,7 +51,8 @@ public class NewsIntentService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_GET_TOP_HEADLINES.equals(action)) {
                 final String countryCode = intent.getStringExtra(EXTRA_COUNTRY_CODE);
-                handleActionGetTopHeadlines(countryCode);
+                final int pageSize = intent.getIntExtra(EXTRA_PAGE_SIZE, 20);
+                handleActionGetTopHeadlines(countryCode, pageSize);
             }
         }
     }
@@ -58,7 +61,14 @@ public class NewsIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionGetTopHeadlines(String countryCode) {
+    private void handleActionGetTopHeadlines(String countryCode, int pageSize) {
+
+       int page = 0; //API provides paging if totalResults are greater than the requested pageSize
+
+        //Maximum page size is 100
+        if (pageSize > 100) {
+            pageSize = 100;
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(NEWS_API_BASE_URL)
@@ -69,12 +79,12 @@ public class NewsIntentService extends IntentService {
 
         NewsApiService service = retrofit.create(NewsApiService.class);
         //TODO: Move country code to Constants & add Utils method to verify codes
-        service.getTopHeadlines(countryCode).enqueue(new Callback<NewsApiResponse>() {
+        service.getTopHeadlines(countryCode, pageSize, page).enqueue(new Callback<NewsApiResponse>() {
             @Override
             public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                 Log.i(TAG, "Success contacting API");
                 if (response.body() != null && response.body().getArticles() != null) {
-                     saveArticles(response.body().getArticles());
+                    saveArticles(response.body().getArticles());
                 }
             }
 

@@ -11,5 +11,9 @@ import retrofit2.http.Query;
 public interface NewsApiService {
     @Headers("X-Api-Key: " + BuildConfig.NEWSAPI_API_KEY)
     @GET("top-headlines")
-    Call<NewsApiResponse> getTopHeadlines(@Query("country") String countryCode);
+    Call<NewsApiResponse> getTopHeadlines(
+            @Query("country") String countryCode,
+            @Query("pageSize") int pageSize,
+            @Query("page") int page
+    );
 }
