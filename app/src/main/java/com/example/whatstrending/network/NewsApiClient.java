@@ -15,7 +15,6 @@ public class NewsApiClient {
 
     private static NewsApiClient mInstance;
     private Retrofit mRetrofit;
-    private NewsApiService mNewsApiService;
 
     private NewsApiClient() {
         mRetrofit = new Retrofit.Builder()
