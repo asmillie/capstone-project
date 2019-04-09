@@ -15,6 +15,9 @@ public interface ArticleDao {
     @Query("SELECT * FROM articles ORDER BY published_at")
     LiveData<List<Article>> getAllArticles();
 
+    @Query("SELECT * FROM articles WHERE id = :id")
+    LiveData<Article> getArticleById(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveArticles(List<Article> articles);
 
