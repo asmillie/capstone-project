@@ -11,7 +11,7 @@ import android.content.Context;
  * @ https://developer.android.com/training/data-storage/room/
  * and Lesson 9 of the Udacity nanodegree program
  */
-@Database(entities = {Article.class, Source.class}, version = 1, exportSchema = false)
+@Database(entities = {Article.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
