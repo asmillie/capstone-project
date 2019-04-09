@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.whatstrending.network.NewsApiClient;
 import com.example.whatstrending.network.NewsApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,7 +21,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewsIntentService extends IntentService {
 
     private static final String TAG = NewsIntentService.class.getSimpleName();
-    private static final String NEWS_API_BASE_URL = "https://newsapi.org/v2/";
 
     private static final String ACTION_GET_TOP_HEADLINES = "com.example.whatstrending.data.action.GET_TOP_HEADLINES";
 
@@ -70,16 +70,9 @@ public class NewsIntentService extends IntentService {
             pageSize = 100;
         }
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(NEWS_API_BASE_URL)
-                .addConverterFactory(
-                        GsonConverterFactory.create(
-                                new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
-                .build();
-
-        NewsApiService service = retrofit.create(NewsApiService.class);
+        NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
         //TODO: Move country code to Constants & add Utils method to verify codes
-        service.getTopHeadlines(countryCode, pageSize, page).enqueue(new Callback<NewsApiResponse>() {
+        newsApiService.getTopHeadlines(countryCode, pageSize, page).enqueue(new Callback<NewsApiResponse>() {
             @Override
             public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                 Log.i(TAG, "Success contacting API");

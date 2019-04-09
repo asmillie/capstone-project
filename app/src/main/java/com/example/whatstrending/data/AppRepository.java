@@ -38,7 +38,7 @@ public class AppRepository {
     public LiveData<List<Article>> getAllArticles() {
         LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
         if (isArticleListEmpty(articles)) {
-            NewsIntentService.startActionGetTopHeadlines(mContext, "us");
+            //NewsIntentService.startActionGetTopHeadlines(mContext, "us");
         }
         return articles;
     }
