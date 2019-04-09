@@ -94,7 +94,7 @@ public class NewsIntentService extends IntentService {
                     article.setNewsSource(sourceName);
                 }
             }
-
+            Log.i(TAG, "Saving articles");
             AppRepository.getInstance(NewsIntentService.this).saveArticles(articles);
         }
     }
