@@ -57,10 +57,6 @@ public class NewsIntentService extends IntentService {
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
     private void handleActionGetTopHeadlines(String countryCode, int pageSize) {
 
        int page = 0; //API provides paging if totalResults are greater than the requested pageSize

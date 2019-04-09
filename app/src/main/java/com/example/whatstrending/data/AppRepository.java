@@ -7,6 +7,9 @@ import com.example.whatstrending.AppExecutors;
 
 import java.util.List;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 public class AppRepository {
 
     private final static String TAG = AppRepository.class.getSimpleName();
@@ -38,7 +41,8 @@ public class AppRepository {
     public LiveData<List<Article>> getAllArticles() {
         LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
         if (isArticleListEmpty(articles)) {
-            //NewsIntentService.startActionGetTopHeadlines(mContext, "us");
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NewsApiWorker.class).build();
+            WorkManager.getInstance().enqueue(workRequest);
         }
         return articles;
     }
