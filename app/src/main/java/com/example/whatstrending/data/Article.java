@@ -1,5 +1,6 @@
 package com.example.whatstrending.data;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
@@ -12,6 +13,9 @@ public class Article {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+
+    @ColumnInfo(name = "news_source")
+    private String newsSource;
 
     @SerializedName("source")
     @Expose
@@ -29,9 +33,11 @@ public class Article {
     @SerializedName("url")
     @Expose
     private String url;
+    @ColumnInfo(name = "url_to_image")
     @SerializedName("urlToImage")
     @Expose
     private String urlToImage;
+    @ColumnInfo(name = "published_at")
     @SerializedName("publishedAt")
     @Expose
     private String publishedAt;
@@ -53,6 +59,14 @@ public class Article {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public String getNewsSource() {
+        return newsSource;
+    }
+
+    public void setNewsSource(String newsSource) {
+        this.newsSource = newsSource;
     }
 
     public String getAuthor() {

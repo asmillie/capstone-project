@@ -74,11 +74,7 @@ public class NewsIntentService extends IntentService {
             public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                 Log.i(TAG, "Success contacting API");
                 if (response.body() != null && response.body().getArticles() != null) {
-                    List<Article> articles = response.body().getArticles();
-                    if (articles.size() > 0) {
-                        Log.i(TAG, "Article List contains items, attempting to save");
-                        AppRepository.getInstance(NewsIntentService.this).saveArticles(articles);
-                    }
+                     saveArticles(response.body().getArticles());
                 }
             }
 
@@ -87,5 +83,19 @@ public class NewsIntentService extends IntentService {
                 Log.e(TAG, "Error contacting API: " + t.toString());
             }
         });
+    }
+
+    private void saveArticles(List<Article> articles) {
+        if (articles.size() > 0) {
+            Log.i(TAG, "Article List contains items, copying sources");
+            for (Article article: articles) {
+                String sourceName = article.getSource().getName();
+                if (sourceName != null && !sourceName.equals("")) {
+                    article.setNewsSource(sourceName);
+                }
+            }
+
+            AppRepository.getInstance(NewsIntentService.this).saveArticles(articles);
+        }
     }
 }

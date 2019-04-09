@@ -35,8 +35,8 @@ public class AppRepository {
         return sInstance;
     }
 
-    public LiveData<List<ArticleWithSource>> getAllArticles() {
-        LiveData<List<ArticleWithSource>> articles = mDatabase.articleWithSourceDao().getAllArticlesWithSource();
+    public LiveData<List<Article>> getAllArticles() {
+        LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
         if (isArticleListEmpty(articles)) {
             NewsIntentService.startActionGetTopHeadlines(mContext, "us");
         }
@@ -56,8 +56,8 @@ public class AppRepository {
 
     ////// Private Methods //////
 
-    private boolean isArticleListEmpty(LiveData<List<ArticleWithSource>> articles) {
-        List<ArticleWithSource> articleList = articles.getValue();
+    private boolean isArticleListEmpty(LiveData<List<Article>> articles) {
+        List<Article> articleList = articles.getValue();
         return articleList == null || articleList.isEmpty();
     }
 }
