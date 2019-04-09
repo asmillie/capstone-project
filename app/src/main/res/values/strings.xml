@@ -2,4 +2,7 @@
     <string name="app_name">WhatsTrending</string>
 
     <string name="admob_sample_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="view_article_btn">View Article</string>
+
+    <string name="article_source_and_author" translatable="false">%1$s // %2$s</string>
 </resources>
