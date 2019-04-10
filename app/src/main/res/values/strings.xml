@@ -5,4 +5,5 @@
     <string name="view_article_btn">View Article</string>
 
     <string name="article_source_and_author" translatable="false">%1$s // %2$s</string>
+    <string name="author_unknown">Author Unknown</string>
 </resources>

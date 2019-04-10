@@ -53,7 +53,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         holder.mTitleTV.setText(article.getTitle());
         holder.mPublishedAtTV.setText(article.getPublishedAt());
 
-        String sourceAndAuthor = mContext.getString(R.string.article_source_and_author, article.getNewsSource(), article.getAuthor());
+        String author = (article.getAuthor() != null) ? article.getAuthor() : mContext.getString(R.string.author_unknown);
+        String sourceAndAuthor = mContext.getString(R.string.article_source_and_author, article.getNewsSource(), author);
         holder.mSourceAndAuthorTV.setText(sourceAndAuthor);
 
         holder.mDescription.setText(article.getDescription());

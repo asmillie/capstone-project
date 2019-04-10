@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.whatstrending.R;
@@ -18,6 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsFeedActivity extends AppCompatActivity implements ArticleListAdapter.ArticleClickListener {
+
+    private static final String TAG = NewsFeedActivity.class.getSimpleName();
 
     private NewsFeedViewModel mViewModel;
 
@@ -45,6 +48,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             @Override
             public void onChanged(@Nullable List<Article> articles) {
                 mArticleList = articles;
+                Log.i(TAG, "Observed changed to article list");
                 //TODO: Show empty view when 0 articles returned
                 mArticleListAdapter.setArticleList(mArticleList);
             }
@@ -52,13 +56,14 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     }
 
     private void initViews() {
-        mArticleListAdapter = new ArticleListAdapter(mArticleList, this);
+        mArticleListAdapter = new ArticleListAdapter(null, this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 
         mNewsFeedRV.setLayoutManager(layoutManager);
         mNewsFeedRV.setAdapter(mArticleListAdapter);
+        mArticleListAdapter.setArticleList(mArticleList);
     }
 
     @Override

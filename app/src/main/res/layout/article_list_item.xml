@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
 
     <TextView
         android:id="@+id/published_at"
@@ -18,7 +19,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
 
     <TextView
         android:id="@+id/source_and_author"
@@ -26,7 +28,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/published_at"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
 
     <TextView
         android:id="@+id/description"
@@ -34,9 +37,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/source_and_author"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/view_article_btn"
         android:text="@string/view_article_btn"
         android:layout_width="wrap_content"
