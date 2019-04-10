@@ -21,6 +21,6 @@ public interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveArticles(List<Article> articles);
 
-    @Delete
-    void deleteArticles(List<Article> articles);
+    @Query("DELETE FROM articles")
+    void deleteAllArticles();
 }

@@ -36,6 +36,8 @@ public class NewsApiWorker extends Worker {
     public Result doWork() {
 
         if (totalResults == TOTAL_RESULTS_DEFAULT) {
+            //Initial Article Refresh, Delete current articles before pulling new batch
+            deleteAllArticles();
             getTopHeadlinesPage(PAGE_DEFAULT);
         }
 
@@ -74,6 +76,10 @@ public class NewsApiWorker extends Worker {
 
             saveArticles(response.getArticles());
         }
+    }
+
+    private void deleteAllArticles() {
+        AppRepository.getInstance(mContext).deleteAllArticles();
     }
 
     private void saveArticles(List<Article> articles) {
