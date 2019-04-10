@@ -24,8 +24,6 @@ public class AppRepository {
     private AppRepository(Context context) {
         mDatabase = AppDatabase.getInstance(context);
         mContext = context;
-        ///TODO: Remove test call
-        getAllArticles();
     }
 
     //Singleton instantiation of Repository

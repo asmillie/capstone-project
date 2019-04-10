@@ -7,11 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.whatstrending.R;
-import com.example.whatstrending.data.AppRepository;
 import com.example.whatstrending.data.Article;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_news_feed);
 
         ButterKnife.bind(this);
 
