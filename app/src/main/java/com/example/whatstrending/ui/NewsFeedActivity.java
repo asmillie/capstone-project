@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +37,13 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindView(R.id.empty_view)
     TextView mEmptyView;
-    //TODO: Empty view when no content, loading wheel when fetching new content
+
+    @BindView(R.id.loading_bar)
+    ProgressBar mLoadingBar;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +73,17 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                     mArticleListAdapter.setArticleList(mArticleList);
                     showList();
                 } else {
-                    hideList();
+                    showEmptyView();
                 }
             }
         });
     }
 
     private void initViews() {
+        mToolbar.setTitle(getString(R.string.app_name));
+
+        showLoading();
+
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
@@ -86,13 +98,21 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mArticleListAdapter.setArticleList(mArticleList);
     }
 
-    private void hideList() {
+    private void showEmptyView() {
         mNewsFeedRV.setVisibility(View.GONE);
+        mLoadingBar.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
     }
 
     private void showList() {
         mNewsFeedRV.setVisibility(View.VISIBLE);
+        mLoadingBar.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+    }
+
+    private void showLoading() {
+        mNewsFeedRV.setVisibility(View.GONE);
+        mLoadingBar.setVisibility(View.VISIBLE);
         mEmptyView.setVisibility(View.GONE);
     }
 }
