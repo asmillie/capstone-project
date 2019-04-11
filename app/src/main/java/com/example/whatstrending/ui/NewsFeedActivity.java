@@ -37,6 +37,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
+    private Snackbar mSnackbar;
 
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
@@ -57,6 +58,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         ButterKnife.bind(this);
 
+        mToolbar.setTitle(getString(R.string.app_name));
+        setSupportActionBar(mToolbar);
+
         initViewModel();
         initViews();
     }
@@ -74,22 +78,18 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             public void onChanged(@Nullable List<Article> articles) {
                 mArticleList = articles;
                 Log.i(TAG, "Observed changed to article list");
-                //TODO: Snackbar to allow user to refresh article list when new data fetched
-                if (articles != null && articles.size() > 0) {
-                    mArticleListAdapter.setArticleList(mArticleList);
-                    mArticleListAdapter.notifyDataSetChanged();
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    updateList(); //User requested refresh, update immediately
+                    mSwipeRefreshLayout.setRefreshing(false);
                 } else {
-                    //showEmptyView();
+                    //TODO: Don't show on first page load, show list immediately
+                    showSnackBar(); //Data retrieved by scheduled job, present user option to refresh
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
     private void initViews() {
-        mToolbar.setTitle(getString(R.string.app_name));
-        setSupportActionBar(mToolbar);
-
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
@@ -112,13 +112,17 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     }
 
     private void showSnackBar() {
-        Snackbar.make(mParentLayout, R.string.new_headlines_available, Snackbar.LENGTH_LONG)
+        if (mSnackbar != null && mSnackbar.isShown()) {
+            mSnackbar.dismiss();
+        }
+        mSnackbar = Snackbar.make(mParentLayout, R.string.new_headlines_available, Snackbar.LENGTH_LONG)
                 .setAction(R.string.refresh_action, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        updateList();
                     }
                 });
+        mSnackbar.show();
     }
 
     private void refreshList() {
@@ -126,6 +130,13 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             initViewModel();
         }
         mViewModel.refreshArticles();
+    }
+
+    private void updateList() {
+        if (mArticleList != null && mArticleList.size() > 0) {
+            mArticleListAdapter.setArticleList(mArticleList);
+            mArticleListAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
