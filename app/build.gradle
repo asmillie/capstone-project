@@ -74,4 +74,7 @@ dependencies {
 
     //Picasso Image Handling Library
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //ThreeTen Android Backport Library
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 }
