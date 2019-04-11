@@ -12,41 +12,43 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+    <!--
+        <TextView
+            android:id="@+id/published_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/>
 
-    <TextView
-        android:id="@+id/published_at"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/>
+        <TextView
+            android:id="@+id/source_and_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/published_at"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/> -->
 
-    <TextView
-        android:id="@+id/source_and_author"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/published_at"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/source_and_author"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
-
-    <android.support.design.button.MaterialButton
-        android:id="@+id/view_article_btn"
-        android:text="@string/view_article_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/description"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        <android.support.design.button.MaterialButton
+            android:id="@+id/view_article_btn"
+            android:text="@string/view_article_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+            app:icon="@drawable/ic_open_in_browser"/>
 
 </android.support.constraint.ConstraintLayout>
