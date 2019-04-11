@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -78,6 +79,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         mNewsFeedRV.setLayoutManager(layoutManager);
         mNewsFeedRV.setAdapter(mArticleListAdapter);
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        mNewsFeedRV.addItemDecoration(itemDecoration);
+
         mArticleListAdapter.setArticleList(mArticleList);
     }
 

@@ -11,7 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
 
     <TextView
         android:id="@+id/published_at"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+        android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/>
 
     <TextView
         android:id="@+id/source_and_author"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@id/published_at"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+        android:textAppearance="@style/TextAppearance.WhatsTrending.Subtitle1"/>
 
     <TextView
         android:id="@+id/description"
