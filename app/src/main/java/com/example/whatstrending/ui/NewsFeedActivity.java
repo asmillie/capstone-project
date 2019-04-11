@@ -13,6 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -85,6 +88,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     private void initViews() {
         mToolbar.setTitle(getString(R.string.app_name));
+        setSupportActionBar(mToolbar);
 
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
@@ -122,5 +126,23 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             initViewModel();
         }
         mViewModel.refreshArticles();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_news_feed, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_action:
+                mSwipeRefreshLayout.setRefreshing(true);
+                refreshList();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
