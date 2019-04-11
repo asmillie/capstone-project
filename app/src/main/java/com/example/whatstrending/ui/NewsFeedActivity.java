@@ -38,6 +38,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
+    private boolean mInitialLoad;
 
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
@@ -61,6 +62,8 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
 
+        mInitialLoad = true;
+
         initViewModel();
         initViews();
     }
@@ -77,13 +80,22 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             @Override
             public void onChanged(@Nullable List<Article> articles) {
                 mArticleList = articles;
-                Log.i(TAG, "Observed changed to article list");
+                if (articles == null || articles.size() == 0) {
+                    return;
+                }
+                Log.i(TAG, "Observed changed to article list and list contains items");
                 if (mSwipeRefreshLayout.isRefreshing()) {
                     updateList(); //User requested refresh, update immediately
                     mSwipeRefreshLayout.setRefreshing(false);
                 } else {
-                    //TODO: Don't show on first page load, show list immediately
-                    showSnackBar(); //Data retrieved by scheduled job, present user option to refresh
+                    if (mInitialLoad) {
+                        //Activity was just created, show data
+                        updateList();
+                        mInitialLoad = false;
+                    } else {
+                        //Data retrieved by scheduled job, present user option to refresh
+                        showSnackBar();
+                    }
                 }
             }
         });

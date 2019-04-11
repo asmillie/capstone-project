@@ -26,7 +26,7 @@ public class NewsFeedViewModel extends AndroidViewModel {
         }
         return mArticles;
     }
-    //TODO: Add swipe-to-refresh behaviour on recyclerview to refresh data
+
     public void refreshArticles() {
         mArticles = mRepository.getAllArticles();
     }
