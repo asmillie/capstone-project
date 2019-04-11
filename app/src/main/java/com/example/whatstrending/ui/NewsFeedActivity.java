@@ -3,6 +3,8 @@ package com.example.whatstrending.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -43,6 +45,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    @BindView(R.id.parent_layout)
+    CoordinatorLayout mParentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,5 +119,15 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mNewsFeedRV.setVisibility(View.GONE);
         mLoadingBar.setVisibility(View.VISIBLE);
         mEmptyView.setVisibility(View.GONE);
+    }
+
+    private void showSnackBar() {
+        Snackbar.make(mParentLayout, R.string.new_headlines_available, Snackbar.LENGTH_LONG)
+                .setAction(R.string.refresh_action, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
     }
 }

@@ -9,4 +9,6 @@
     <string name="author_unknown">Author Unknown</string>
     <string name="empty_list">Nothing here</string>
     <string name="empty_published_at">Date Unknown</string>
+    <string name="new_headlines_available">New Headlines are available</string>
+    <string name="refresh_action">Refresh</string>
 </resources>
