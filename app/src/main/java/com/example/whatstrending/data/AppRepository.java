@@ -34,10 +34,14 @@ public class AppRepository {
     public LiveData<List<Article>> getAllArticles() {
         LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
         if (isArticleListEmpty(articles)) {
-            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NewsApiWorker.class).build();
-            WorkManager.getInstance().enqueue(workRequest); //TODO: Also setup on a schedule
+             refreshArticles();
         }
         return articles;
+    }
+    //TODO: Also setup on a schedule
+    public void refreshArticles() {
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NewsApiWorker.class).build();
+        WorkManager.getInstance().enqueue(workRequest);
     }
 
     public void saveArticles(final List<Article> articles) {

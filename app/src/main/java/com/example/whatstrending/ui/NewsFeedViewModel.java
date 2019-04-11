@@ -22,12 +22,12 @@ public class NewsFeedViewModel extends AndroidViewModel {
 
     public LiveData<List<Article>> getAllArticles() {
         if (mArticles == null) {
-            refreshArticles();
+            mArticles = mRepository.getAllArticles();
         }
         return mArticles;
     }
 
     public void refreshArticles() {
-        mArticles = mRepository.getAllArticles();
+        mRepository.refreshArticles();
     }
 }

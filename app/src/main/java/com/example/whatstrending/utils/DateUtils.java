@@ -1,4 +1,4 @@
-package com.example.whatstrending;
+package com.example.whatstrending.utils;
 
 
 import org.threeten.bp.Instant;
