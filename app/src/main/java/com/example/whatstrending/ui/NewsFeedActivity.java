@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -37,17 +38,14 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
 
-    @BindView(R.id.empty_view)
-    TextView mEmptyView;
-
-    @BindView(R.id.loading_bar)
-    ProgressBar mLoadingBar;
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     @BindView(R.id.parent_layout)
     CoordinatorLayout mParentLayout;
+
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +74,17 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                 //TODO: Snackbar to allow user to refresh article list when new data fetched
                 if (articles != null && articles.size() > 0) {
                     mArticleListAdapter.setArticleList(mArticleList);
-                    showList();
+                    mArticleListAdapter.notifyDataSetChanged();
                 } else {
-                    showEmptyView();
+                    //showEmptyView();
                 }
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
 
     private void initViews() {
         mToolbar.setTitle(getString(R.string.app_name));
-
-        showLoading();
 
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
@@ -101,24 +98,13 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mNewsFeedRV.addItemDecoration(itemDecoration);
 
         mArticleListAdapter.setArticleList(mArticleList);
-    }
 
-    private void showEmptyView() {
-        mNewsFeedRV.setVisibility(View.GONE);
-        mLoadingBar.setVisibility(View.GONE);
-        mEmptyView.setVisibility(View.VISIBLE);
-    }
-
-    private void showList() {
-        mNewsFeedRV.setVisibility(View.VISIBLE);
-        mLoadingBar.setVisibility(View.GONE);
-        mEmptyView.setVisibility(View.GONE);
-    }
-
-    private void showLoading() {
-        mNewsFeedRV.setVisibility(View.GONE);
-        mLoadingBar.setVisibility(View.VISIBLE);
-        mEmptyView.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+            }
+        });
     }
 
     private void showSnackBar() {
@@ -129,5 +115,12 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
                     }
                 });
+    }
+
+    private void refreshList() {
+        if (mViewModel == null) {
+            initViewModel();
+        }
+        mViewModel.refreshArticles();
     }
 }
