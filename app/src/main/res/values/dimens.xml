@@ -2,4 +2,5 @@
 <resources>
     <!-- News Feed -->
     <dimen name="news_feed_padding">8dp</dimen>
+    <dimen name="headline_item_padding">8dp</dimen>
 </resources>

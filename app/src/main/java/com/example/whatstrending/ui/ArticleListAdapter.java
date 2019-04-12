@@ -53,20 +53,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         Article article = mArticleList.get(position);
 
         holder.mTitleTV.setText(article.getTitle());
-        //TODO: Finalize layout
-/*
-        String publishedAt = article.getPublishedAt();
-        if (publishedAt != null && !publishedAt.equals("")) {
-            publishedAt = DateUtils.formatUTCDateString(publishedAt);
-            holder.mPublishedAtTV.setText(publishedAt);
-        } else {
-            holder.mPublishedAtTV.setText(mContext.getString(R.string.empty_published_at));
-        }
-
-        String author = (article.getAuthor() != null) ? article.getAuthor() : mContext.getString(R.string.author_unknown);
-        String sourceAndAuthor = mContext.getString(R.string.article_source_and_author, article.getNewsSource(), author);
-        holder.mSourceAndAuthorTV.setText(sourceAndAuthor); */
-
         holder.mDescription.setText(article.getDescription());
     }
 
@@ -79,12 +65,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         @BindView(R.id.title)
         TextView mTitleTV;
-
-        //@BindView(R.id.source_and_author)
-        //TextView mSourceAndAuthorTV;
-
-        //@BindView(R.id.published_at)
-        //TextView mPublishedAtTV;
 
         @BindView(R.id.description)
         TextView mDescription;
