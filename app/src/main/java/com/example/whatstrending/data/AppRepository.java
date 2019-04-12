@@ -3,6 +3,8 @@ package com.example.whatstrending.data;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
+import com.example.whatstrending.utils.WorkUtils;
+
 import java.util.List;
 
 import androidx.work.OneTimeWorkRequest;
@@ -38,10 +40,9 @@ public class AppRepository {
         }
         return articles;
     }
-    //TODO: Also setup on a schedule
+
     public void refreshArticles() {
-        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NewsApiWorker.class).build();
-        WorkManager.getInstance().enqueue(workRequest);
+        WorkUtils.oneTimeGetAllTopHeadlines();
     }
 
     public void saveArticles(final List<Article> articles) {

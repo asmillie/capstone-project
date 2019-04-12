@@ -5,11 +5,16 @@ import com.example.whatstrending.data.NewsApiWorker;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 public class WorkUtils {
+
+    private static final String UNIQUE_WORK_GET_TOP_HEADLINES = "get-top-headlines";
 
     private WorkUtils() {}
 
@@ -23,9 +28,26 @@ public class WorkUtils {
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(NewsApiWorker.class, 30, TimeUnit.MINUTES)
                 .setConstraints(constraints)
+                .addTag(UNIQUE_WORK_GET_TOP_HEADLINES)
                 .build();
 
-        WorkManager.getInstance().enqueue(workRequest);
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+                UNIQUE_WORK_GET_TOP_HEADLINES,
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+        );
+    }
+
+    public static void oneTimeGetAllTopHeadlines() {
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(NewsApiWorker.class)
+                .addTag(WorkUtils.UNIQUE_WORK_GET_TOP_HEADLINES)
+                .build();
+
+        WorkManager.getInstance().enqueueUniqueWork(
+                UNIQUE_WORK_GET_TOP_HEADLINES,
+                ExistingWorkPolicy.KEEP,
+                workRequest
+        );
     }
 
     public static boolean workHasRunRecently() {
