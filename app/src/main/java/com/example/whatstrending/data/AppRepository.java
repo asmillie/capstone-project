@@ -30,15 +30,15 @@ public class AppRepository {
         return sInstance;
     }
 
-    public LiveData<List<Article>> getAllArticles() {
+    public LiveData<List<Article>> getAllHeadlines() {
         LiveData<List<Article>> articles = mDatabase.articleDao().getAllHeadlines();
         if (isArticleListEmpty(articles)) {
-             refreshArticles();
+             refreshHeadlines();
         }
         return articles;
     }
 
-    public void refreshArticles() {
+    public void refreshHeadlines() {
         WorkUtils.oneTimeGetAllTopHeadlines();
     }
 
@@ -48,7 +48,7 @@ public class AppRepository {
         }
     }
 
-    public void deleteAllArticles() {
+    public void deleteAllHeadlines() {
         mDatabase.articleDao().deleteAllArticles();
     }
 

@@ -79,7 +79,7 @@ public class NewsApiWorker extends Worker {
     }
 
     private void deleteAllArticles() {
-        AppRepository.getInstance(mContext).deleteAllArticles();
+        AppRepository.getInstance(mContext).deleteAllHeadlines();
     }
 
     private void saveArticles(List<Article> articles) {
