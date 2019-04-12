@@ -52,6 +52,10 @@ public class AppRepository {
         mDatabase.articleDao().deleteAllArticles();
     }
 
+    public LiveData<Article> getArticleById(int id) {
+        return mDatabase.articleDao().getArticleById(id);
+    }
+
     ////// Private Methods //////
 
     private boolean isArticleListEmpty(LiveData<List<Article>> articles) {
