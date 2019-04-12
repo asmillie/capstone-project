@@ -7,9 +7,6 @@ import com.example.whatstrending.utils.WorkUtils;
 
 import java.util.List;
 
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-
 public class AppRepository {
 
     private final static String TAG = AppRepository.class.getSimpleName();
@@ -34,7 +31,7 @@ public class AppRepository {
     }
 
     public LiveData<List<Article>> getAllArticles() {
-        LiveData<List<Article>> articles = mDatabase.articleDao().getAllArticles();
+        LiveData<List<Article>> articles = mDatabase.articleDao().getAllHeadlines();
         if (isArticleListEmpty(articles)) {
              refreshArticles();
         }
