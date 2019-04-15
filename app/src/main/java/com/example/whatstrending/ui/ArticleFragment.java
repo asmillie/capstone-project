@@ -80,6 +80,7 @@ public class ArticleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_article, container, false);
         mUnbinder = ButterKnife.bind(this, view);
 
+        initViewModel();
         return view;
     }
 
