@@ -1,9 +1,9 @@
 package com.example.whatstrending.ui;
 
-import android.app.FragmentManager;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.whatstrending.Constants;
@@ -33,7 +33,7 @@ public class ArticleActivity extends AppCompatActivity {
     private void initFragment(int articleId) {
         ArticleFragment fragment = ArticleFragment.newInstance(articleId);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.article_fragment_container, fragment).commit();
     }
 
