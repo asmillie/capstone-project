@@ -2,6 +2,7 @@ package com.example.whatstrending.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 
@@ -70,7 +72,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @Override
     public void onArticleClick(int articleId) {
-        Toast.makeText(this, "Clicked article id " + articleId, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ArticleActivity.class);
+        intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
+        startActivity(intent);
     }
 
     private void initViewModel() {
