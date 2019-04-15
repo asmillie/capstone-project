@@ -21,13 +21,14 @@ public class ArticleActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        int articleId = intent.getIntExtra(Constants.EXTRA_ARTICLE_ID, Constants.EXTRA_ARTICLE_ID_DEFAULT);
+        final int articleId = intent.getIntExtra(Constants.EXTRA_ARTICLE_ID, Constants.EXTRA_ARTICLE_ID_DEFAULT);
 
         if (articleId == Constants.EXTRA_ARTICLE_ID_DEFAULT) {
             finish();
         }
 
         initViewModel(articleId);
+        initFragment(articleId);
     }
 
     private void initFragment(int articleId) {
@@ -40,6 +41,6 @@ public class ArticleActivity extends AppCompatActivity {
     private void initViewModel(int articleId) {
         ArticleViewModelFactory factory = new ArticleViewModelFactory(getApplication(), articleId);
 
-        ArticleViewModel viewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
+        ArticleViewModel viewModel = ViewModelProviders.of(this, factory).get(ArticleViewModel.class);
     }
 }
