@@ -72,7 +72,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @Override
     public void onArticleClick(int articleId) {
-        Intent intent = new Intent(this, ArticleActivity.class);
+        Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
         intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
         startActivity(intent);
     }

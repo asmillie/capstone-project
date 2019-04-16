@@ -6,12 +6,14 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.example.whatstrending.utils.DateUtils;
@@ -28,7 +30,7 @@ import butterknife.Unbinder;
  */
 public class ArticleFragment extends Fragment {
 
-    public static final String EXTRA_ARTICLE_ID = "article-id";
+    private static final String TAG = ArticleFragment.class.getSimpleName();
 
     private int mArticleId;
     private Unbinder mUnbinder;
@@ -57,7 +59,7 @@ public class ArticleFragment extends Fragment {
     public static ArticleFragment newInstance(int articleId) {
         ArticleFragment fragment = new ArticleFragment();
         Bundle args = new Bundle();
-        args.putInt(EXTRA_ARTICLE_ID, articleId);
+        args.putInt(Constants.EXTRA_ARTICLE_ID, articleId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,7 +68,7 @@ public class ArticleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mArticleId = getArguments().getInt(EXTRA_ARTICLE_ID);
+            mArticleId = getArguments().getInt(Constants.EXTRA_ARTICLE_ID);
         }
     }
 
@@ -74,7 +76,7 @@ public class ArticleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            mArticleId = savedInstanceState.getInt(EXTRA_ARTICLE_ID);
+            mArticleId = savedInstanceState.getInt(Constants.EXTRA_ARTICLE_ID);
         }
 
         View view = inflater.inflate(R.layout.fragment_article, container, false);
@@ -98,6 +100,7 @@ public class ArticleFragment extends Fragment {
             @Override
             public void onChanged(@Nullable Article article) {
                 if (article != null) {
+                    Log.i(TAG, "Observed change to article for article id " + mArticleId);
                     mArticle = article;
                     populateUI();
                 }
@@ -107,7 +110,7 @@ public class ArticleFragment extends Fragment {
 
     private void populateUI() {
         if (mArticle != null) {
-
+            Log.i(TAG, "Populating views for article " + mArticleId);
             String articleImage = mArticle.getUrlToImage();
             if (articleImage != null && !articleImage.equals("")) {
                 //TODO: Sizing
