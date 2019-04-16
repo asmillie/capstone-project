@@ -19,6 +19,9 @@ import com.example.whatstrending.data.Article;
 import com.example.whatstrending.utils.DateUtils;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

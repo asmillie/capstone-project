@@ -16,6 +16,8 @@ public class DateUtils {
     private static final String UTC_PREFIX = "UTC";
     private static final int NEWS_API_UTC_OFFSET = 0;
 
+    private static final String DATE_FORMAT_STRING = "MMM d, yyyy";
+
     private DateUtils() {}
 
     /*
@@ -35,7 +37,7 @@ public class DateUtils {
         ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, zoneId);
 
         DateTimeFormatter dtf = DateTimeFormatter
-                .ofLocalizedDateTime(FormatStyle.MEDIUM)
+                .ofPattern(DATE_FORMAT_STRING)
                 .withLocale( Locale.US );
         return zdt.format(dtf);
     }
