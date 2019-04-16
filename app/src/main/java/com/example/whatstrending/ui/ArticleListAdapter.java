@@ -2,15 +2,18 @@ package com.example.whatstrending.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,7 +56,15 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         Article article = mArticleList.get(position);
 
         holder.mTitleTV.setText(article.getTitle());
-        holder.mDescription.setText(article.getDescription());
+
+        String articleImage = article.getUrlToImage();
+        if (articleImage != null && !articleImage.equals("")) {
+            Picasso.get()
+                    .load(articleImage)
+                    .resize(350, 350)
+                    .centerCrop()
+                    .into(holder.mArticleImage);
+        }
     }
 
     @Override
@@ -66,16 +77,16 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         @BindView(R.id.title)
         TextView mTitleTV;
 
-        @BindView(R.id.description)
-        TextView mDescription;
+        @BindView(R.id.article_image)
+        ImageView mArticleImage;
 
-        @BindView(R.id.view_article_btn)
-        Button mViewArticleBtn;
+        @BindView(R.id.list_item)
+        ConstraintLayout mListItem;
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            mViewArticleBtn.setOnClickListener(this);
+            mListItem.setOnClickListener(this);
         }
 
         @Override

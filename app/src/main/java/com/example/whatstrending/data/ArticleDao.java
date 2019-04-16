@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface ArticleDao {
 
-    @Query("SELECT id, title, description FROM articles ORDER BY published_at")
+    @Query("SELECT id, title, url_to_image FROM articles ORDER BY published_at")
     LiveData<List<Article>> getAllHeadlines();
 
     @Query("SELECT * FROM articles WHERE id = :id")
