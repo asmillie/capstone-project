@@ -3,6 +3,8 @@ package com.example.whatstrending.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
@@ -24,6 +27,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -93,6 +97,23 @@ public class ArticleFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @OnClick(R.id.view_original_btn)
+    public void viewOriginalArticle() {
+        if (mArticle != null && mArticle.getUrl() != null && !mArticle.getUrl().equals("")) {
+            final Uri articleURL = Uri.parse(mArticle.getUrl());
+            final Intent intent = new Intent(Intent.ACTION_VIEW, articleURL);
+            try {
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Error getting package manager: " + e.toString());
+                Toast.makeText(getActivity(), "Error while attempting to view original article", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
     private void initViewModel() {
