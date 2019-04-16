@@ -31,11 +31,7 @@ public class AppRepository {
     }
 
     public LiveData<List<Article>> getAllHeadlines() {
-        LiveData<List<Article>> articles = mDatabase.articleDao().getAllHeadlines();
-        if (isArticleListEmpty(articles)) {
-             refreshHeadlines();
-        }
-        return articles;
+        return mDatabase.articleDao().getAllHeadlines();
     }
 
     public void refreshHeadlines() {
