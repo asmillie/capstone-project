@@ -21,6 +21,7 @@ public class NewsApiWorker extends Worker {
     private static final int TOTAL_RESULTS_DEFAULT = 0;
     private static final int PAGE_DEFAULT = 1;
     private static final int PAGE_SIZE_DEFAULT = 50;
+    private static final int MAX_PAGES = 3; //For testing purposes limit number of pages retrieved
 
     private final Context mContext;
     private int totalResults;
@@ -34,14 +35,27 @@ public class NewsApiWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        //Request pages until all results retrieved
-        //Pagination calculation solution from https://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
-        int totalPages = (totalResults + PAGE_SIZE_DEFAULT - 1) / PAGE_SIZE_DEFAULT;
-        int currentPage = PAGE_DEFAULT;
-        while (currentPage != totalPages) {
-            Log.i(TAG, "Requesting page " + currentPage);
-            getTopHeadlinesPage(currentPage);
-            currentPage++;
+
+        int nextPage = PAGE_DEFAULT; //First page already fetched, start on 2nd
+        if (totalResults == TOTAL_RESULTS_DEFAULT) {
+            //Initial Article Refresh
+            getTopHeadlinesPage(PAGE_DEFAULT);
+            nextPage++;
+        }
+
+        if (totalResults > PAGE_SIZE_DEFAULT) {
+            //More Headlines available, request pages until all results retrieved (Capped for testing to MAX_PAGES)
+            //Pagination calculation solution from https://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+            int totalPages = (totalResults + PAGE_SIZE_DEFAULT - 1) / PAGE_SIZE_DEFAULT;
+            if (totalPages > MAX_PAGES) {
+                totalPages = MAX_PAGES;
+            }
+
+            while (nextPage <= totalPages) {
+                Log.i(TAG, "Requesting page " + nextPage);
+                getTopHeadlinesPage(nextPage);
+                nextPage++;
+            }
         }
 
         return Result.success();
