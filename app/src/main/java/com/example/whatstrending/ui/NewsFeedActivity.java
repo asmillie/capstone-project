@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import com.example.whatstrending.data.Article;
 
 import java.util.List;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,6 +44,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
     private boolean mInitialLoad;
+    private int mSelectedArticleId = Constants.EXTRA_ARTICLE_ID_DEFAULT;
 
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
@@ -53,6 +57,12 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Nullable @BindView(R.id.article_fragment_container)
+    FrameLayout mArticleFragmentContainer;
+
+    @BindBool(R.bool.two_pane_enabled)
+    boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +78,23 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         initViewModel();
         initViews();
+
+        if (mArticleFragmentContainer != null) {
+            mTwoPane = true;
+        }
     }
 
     @Override
     public void onArticleClick(int articleId) {
-        Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
-        intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
-        startActivity(intent);
+        mSelectedArticleId = articleId;
+
+        if (!mTwoPane) {
+            Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
+            intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
+            startActivity(intent);
+        } else {
+            loadFragmentForSelectedArticleId();
+        }
     }
 
     private void initViewModel() {
@@ -125,6 +145,16 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                 refreshList();
             }
         });
+    }
+
+    private void loadFragmentForSelectedArticleId() {
+        if (mSelectedArticleId == Constants.EXTRA_ARTICLE_ID_DEFAULT) {
+            return;
+        }
+
+        ArticleFragment articleFragment = ArticleFragment.newInstance(mSelectedArticleId);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.article_fragment_container, articleFragment).commit();
     }
 
     private void showSnackBar() {
