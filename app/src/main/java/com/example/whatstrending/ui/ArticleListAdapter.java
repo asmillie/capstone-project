@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 
@@ -62,7 +64,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
             Picasso.get()
                     .load(articleImage)
                     .resize(350, 350)
-                    .centerCrop()
+                    .centerCrop(Gravity.TOP)
                     .into(holder.mArticleImage);
         }
     }

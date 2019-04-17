@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/headline_item_padding"
+    android:paddingBottom="@dimen/headline_item_padding"
+    android:id="@+id/list_item">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/article_image"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+
+    <ImageView
+        android:id="@+id/article_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingLeft="@dimen/news_feed_padding"
+        android:paddingStart="@dimen/news_feed_padding"
+        android:paddingRight="@dimen/news_feed_padding"
+        android:paddingEnd="@dimen/news_feed_padding"/>
+
+</android.support.constraint.ConstraintLayout>

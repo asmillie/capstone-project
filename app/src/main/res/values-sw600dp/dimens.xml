@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- News Feed -->
+    <dimen name="news_feed_padding">16dp</dimen>
+    <dimen name="headline_item_padding">16dp</dimen>
+
+    <!-- Article -->
+</resources>

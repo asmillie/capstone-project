@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -56,6 +57,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @BindBool(R.bool.is_large_screen_device)
+    boolean mIsLargeScreenDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +115,13 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private void initViews() {
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager;
+        if (!mIsLargeScreenDevice) {
+            layoutManager = new LinearLayoutManager(this,
+                    LinearLayoutManager.VERTICAL, false);
+        } else {
+            layoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+        }
 
         mNewsFeedRV.setLayoutManager(layoutManager);
         mNewsFeedRV.setAdapter(mArticleListAdapter);
