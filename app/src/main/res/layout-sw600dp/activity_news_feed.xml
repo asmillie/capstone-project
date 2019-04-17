@@ -7,39 +7,22 @@
     android:orientation="vertical"
     android:id="@+id/parent_layout">
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:isScrollContainer="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="0dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/news_feed_rv"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent">
+            android:paddingStart="@dimen/news_feed_padding"
+            android:paddingEnd="@dimen/news_feed_padding"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/news_feed_rv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/news_feed_padding"
-                android:paddingEnd="@dimen/news_feed_padding"/>
-
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <FrameLayout
-            android:id="@+id/article_fragment_container"
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/swipe_refresh_layout"
-            app:layout_constraintRight_toRightOf="parent"/>
-
-    </android.support.constraint.ConstraintLayout>
-
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -44,7 +44,6 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
     private boolean mInitialLoad;
-    private int mSelectedArticleId = Constants.EXTRA_ARTICLE_ID_DEFAULT;
 
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
@@ -57,12 +56,6 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
-
-    @Nullable @BindView(R.id.article_fragment_container)
-    FrameLayout mArticleFragmentContainer;
-
-    @BindBool(R.bool.two_pane_enabled)
-    boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,23 +71,13 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         initViewModel();
         initViews();
-
-        if (mArticleFragmentContainer != null) {
-            mTwoPane = true;
-        }
     }
 
     @Override
     public void onArticleClick(int articleId) {
-        mSelectedArticleId = articleId;
-
-        if (!mTwoPane) {
-            Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
-            intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
-            startActivity(intent);
-        } else {
-            loadFragmentForSelectedArticleId();
-        }
+        Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
+        intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
+        startActivity(intent);
     }
 
     private void initViewModel() {
@@ -145,16 +128,6 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                 refreshList();
             }
         });
-    }
-
-    private void loadFragmentForSelectedArticleId() {
-        if (mSelectedArticleId == Constants.EXTRA_ARTICLE_ID_DEFAULT) {
-            return;
-        }
-
-        ArticleFragment articleFragment = ArticleFragment.newInstance(mSelectedArticleId);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.article_fragment_container, articleFragment).commit();
     }
 
     private void showSnackBar() {
