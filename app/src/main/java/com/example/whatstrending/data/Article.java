@@ -3,12 +3,14 @@ package com.example.whatstrending.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "articles")
+@Entity(tableName = "articles",
+    indices = {@Index(value = {"title", "content"}, unique = true)})
 public class Article {
 
     @PrimaryKey(autoGenerate = true)

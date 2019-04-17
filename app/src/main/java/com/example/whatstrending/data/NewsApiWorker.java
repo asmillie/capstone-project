@@ -34,23 +34,14 @@ public class NewsApiWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-
-        if (totalResults == TOTAL_RESULTS_DEFAULT) {
-            //Initial Article Refresh, Delete current articles before pulling new batch
-            deleteAllArticles();
-            getTopHeadlinesPage(PAGE_DEFAULT);
-        }
-
-        if (totalResults > PAGE_SIZE_DEFAULT) {
-            //More Headlines available, request pages until all results retrieved
-            //Pagination calculation solution from https://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
-            int totalPages = (totalResults + PAGE_SIZE_DEFAULT - 1) / PAGE_SIZE_DEFAULT;
-            int currentPage = 2; //First page already fetched, start on 2nd
-            while (currentPage != totalPages) {
-                Log.i(TAG, "Requesting page " + currentPage);
-                getTopHeadlinesPage(currentPage);
-                currentPage++;
-            }
+        //Request pages until all results retrieved
+        //Pagination calculation solution from https://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
+        int totalPages = (totalResults + PAGE_SIZE_DEFAULT - 1) / PAGE_SIZE_DEFAULT;
+        int currentPage = PAGE_DEFAULT;
+        while (currentPage != totalPages) {
+            Log.i(TAG, "Requesting page " + currentPage);
+            getTopHeadlinesPage(currentPage);
+            currentPage++;
         }
 
         return Result.success();
@@ -76,10 +67,6 @@ public class NewsApiWorker extends Worker {
 
             saveArticles(response.getArticles());
         }
-    }
-
-    private void deleteAllArticles() {
-        AppRepository.getInstance(mContext).deleteAllHeadlines();
     }
 
     private void saveArticles(List<Article> articles) {
