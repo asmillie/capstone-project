@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class ArticleFragment extends Fragment {
     private int mArticleId;
     private Unbinder mUnbinder;
 
+    private ArticleFragmentViewModel mViewModel;
     private Article mArticle;
 
     @BindView(R.id.title)
@@ -61,6 +63,7 @@ public class ArticleFragment extends Fragment {
     }
 
     public static ArticleFragment newInstance(int articleId) {
+        Log.i(TAG, "Instantiating fragment for article id " + articleId);
         ArticleFragment fragment = new ArticleFragment();
         Bundle args = new Bundle();
         args.putInt(Constants.EXTRA_ARTICLE_ID, articleId);
@@ -96,6 +99,20 @@ public class ArticleFragment extends Fragment {
         mUnbinder.unbind();
     }
 
+    @Override
+    public void onResume() {
+        if (mArticleId != Constants.EXTRA_ARTICLE_ID_DEFAULT && mViewModel == null) {
+            initViewModel();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(Constants.EXTRA_ARTICLE_ID, mArticleId);
+        super.onSaveInstanceState(outState);
+    }
+
     @OnClick(R.id.view_original_btn)
     public void viewOriginalArticle() {
         if (mArticle != null && mArticle.getUrl() != null && !mArticle.getUrl().equals("")) {
@@ -116,8 +133,8 @@ public class ArticleFragment extends Fragment {
     private void initViewModel() {
         ArticleFragmentViewModelFactory factory = new ArticleFragmentViewModelFactory(getActivity().getApplication(), mArticleId);
 
-        ArticleFragmentViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(ArticleFragmentViewModel.class);
-        viewModel.getArticle().observe(this, new Observer<Article>() {
+        mViewModel = ViewModelProviders.of(this, factory).get(ArticleFragmentViewModel.class);
+        mViewModel.getArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(@Nullable Article article) {
                 if (article != null) {
@@ -134,7 +151,6 @@ public class ArticleFragment extends Fragment {
             Log.i(TAG, "Populating views for article " + mArticleId);
             String articleImage = mArticle.getUrlToImage();
             if (articleImage != null && !articleImage.equals("")) {
-                //TODO: Sizing
                 Picasso.get().load(articleImage).into(mArticleImage);
             }
 
