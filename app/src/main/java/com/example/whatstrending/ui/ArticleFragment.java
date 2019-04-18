@@ -7,13 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,9 +21,6 @@ import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.example.whatstrending.utils.DateUtils;
 import com.squareup.picasso.Picasso;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -121,9 +114,9 @@ public class ArticleFragment extends Fragment {
     }
 
     private void initViewModel() {
-        ArticleViewModelFactory factory = new ArticleViewModelFactory(getActivity().getApplication(), mArticleId);
+        ArticleFragmentViewModelFactory factory = new ArticleFragmentViewModelFactory(getActivity().getApplication(), mArticleId);
 
-        ArticleViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(ArticleViewModel.class);
+        ArticleFragmentViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(ArticleFragmentViewModel.class);
         viewModel.getArticle().observe(this, new Observer<Article>() {
             @Override
             public void onChanged(@Nullable Article article) {

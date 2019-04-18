@@ -1,31 +1,33 @@
 package com.example.whatstrending.ui;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 
 import com.example.whatstrending.data.AppRepository;
 import com.example.whatstrending.data.Article;
 
-public class ArticleViewModel extends ViewModel {
+import java.util.List;
+
+public class ArticleViewModel extends AndroidViewModel {
 
     private final AppRepository mRepository;
-    private final int mArticleId;
+    private LiveData<List<Article>> mArticleIds;
 
-    private LiveData<Article> mArticle;
-
-    ArticleViewModel(AppRepository appRepository, int articleId) {
-        this.mRepository = appRepository;
-        this.mArticleId = articleId;
+    public ArticleViewModel(@NonNull Application application) {
+        super(application);
+        mRepository = AppRepository.getInstance(application.getApplicationContext());
     }
 
-    LiveData<Article> getArticle() {
-        if (mArticle == null) {
-            refreshArticle();
+    public LiveData<List<Article>> getArticleIds() {
+        if (mArticleIds == null) {
+            refreshArticleIds();
         }
-        return mArticle;
+        return mArticleIds;
     }
 
-    private void refreshArticle() {
-        mArticle = mRepository.getArticleById(mArticleId);
+    private void refreshArticleIds() {
+        mArticleIds = mRepository.getAllArticleIds();
     }
 }

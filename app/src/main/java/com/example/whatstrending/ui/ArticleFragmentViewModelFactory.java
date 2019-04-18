@@ -7,12 +7,12 @@ import android.support.annotation.NonNull;
 
 import com.example.whatstrending.data.AppRepository;
 
-public class ArticleViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
+public class ArticleFragmentViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
 
     private final AppRepository mRepository;
     private final int mArticleId;
 
-    public ArticleViewModelFactory(@NonNull Application application, int articleId) {
+    public ArticleFragmentViewModelFactory(@NonNull Application application, int articleId) {
         super(application);
         this.mRepository = AppRepository.getInstance(application.getApplicationContext());
         this.mArticleId = articleId;
@@ -23,6 +23,6 @@ public class ArticleViewModelFactory extends ViewModelProvider.AndroidViewModelF
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new ArticleViewModel(mRepository, mArticleId);
+        return (T) new ArticleFragmentViewModel(mRepository, mArticleId);
     }
 }

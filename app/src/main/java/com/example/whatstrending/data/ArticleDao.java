@@ -14,6 +14,9 @@ public interface ArticleDao {
     @Query("SELECT id, title, url_to_image FROM articles ORDER BY published_at")
     LiveData<List<Article>> getAllHeadlines();
 
+    @Query("SELECT id FROM articles ORDER BY published_at")
+    LiveData<List<Article>> getAllArticleIds();
+
     @Query("SELECT * FROM articles WHERE id = :id")
     LiveData<Article> getArticleById(int id);
 
