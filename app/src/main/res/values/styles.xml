@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorControlNormal">#fff</item>
     </style>
     
     <style name="TextAppearance.WhatsTrending.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
