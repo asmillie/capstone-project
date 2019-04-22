@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +61,9 @@ public class ArticleFragment extends Fragment {
     @BindView(R.id.article_image)
     ImageView mArticleImage;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     public ArticleFragment() {
         // Required empty public constructor
     }
@@ -88,6 +94,16 @@ public class ArticleFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_article, container, false);
         mUnbinder = ButterKnife.bind(this, view);
+
+        try {
+            AppCompatActivity activity = (AppCompatActivity) getActivity();
+            activity.setSupportActionBar(mToolbar);
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e){
+            Log.e(TAG, "Error setting up behavior on action bar in fragment: " + e.toString());
+        }
+
+        mToolbar.setTitle("");
 
         initViewModel();
         return view;
