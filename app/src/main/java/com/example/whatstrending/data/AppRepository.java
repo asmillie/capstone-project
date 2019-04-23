@@ -56,6 +56,13 @@ public class AppRepository {
         return mDatabase.articleDao().getAllArticleIds();
     }
 
+    /*
+    Used by App Widget to get the top headlines
+     */
+    public List<Article> getTopHeadlines(int limit) {
+        return mDatabase.articleDao().getTopHeadlines(limit);
+    }
+
     ////// Private Methods //////
 
     private boolean isArticleListEmpty(LiveData<List<Article>> articles) {

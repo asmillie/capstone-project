@@ -6,6 +6,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
+import com.example.whatstrending.Constants;
+
 import java.util.List;
 
 @Dao
@@ -19,6 +21,9 @@ public interface ArticleDao {
 
     @Query("SELECT * FROM articles WHERE id = :id")
     LiveData<Article> getArticleById(int id);
+
+    @Query("SELECT * FROM articles ORDER BY published_at LIMIT :limit")
+    List<Article> getTopHeadlines(int limit);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void saveArticles(List<Article> articles);
