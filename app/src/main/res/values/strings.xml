@@ -12,7 +12,10 @@
     <string name="new_headlines_available">New Headlines are available</string>
     <string name="refresh_action">Refresh</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Article Activity -->
     <string name="view_original_article_fab">View Original Article</string>
+
+    <!-- App Widget -->
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
