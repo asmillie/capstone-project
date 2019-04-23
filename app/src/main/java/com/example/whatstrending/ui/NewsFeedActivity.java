@@ -2,6 +2,7 @@ package com.example.whatstrending.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -75,6 +78,14 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         initViewModel();
         initViews();
+        initAnimations();
+        runNewsFeedAnimation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        runNewsFeedAnimation();
     }
 
     @Override
@@ -82,6 +93,24 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
         intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_news_feed, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_action:
+                mSwipeRefreshLayout.setRefreshing(true);
+                refreshList();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViewModel() {
@@ -164,24 +193,18 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         if (mArticleList != null && mArticleList.size() > 0) {
             mArticleListAdapter.setArticleList(mArticleList);
             mArticleListAdapter.notifyDataSetChanged();
+            mNewsFeedRV.scheduleLayoutAnimation();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_news_feed, menu);
-        return true;
+    private void initAnimations() {
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(mNewsFeedRV.getContext(), R.anim.layout_anim_fall_down);
+
+        mNewsFeedRV.setLayoutAnimation(controller);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh_action:
-                mSwipeRefreshLayout.setRefreshing(true);
-                refreshList();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void runNewsFeedAnimation() {
+        mNewsFeedRV.scheduleLayoutAnimation();
     }
 }
