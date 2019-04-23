@@ -16,6 +16,7 @@
     <string name="view_original_article_fab">View Original Article</string>
 
     <!-- App Widget -->
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="widget_list_description">Latest Headlines</string>
+    <string name="widget_empty_list">No Headlines Found</string>
     <string name="add_widget">Add widget</string>
 </resources>
