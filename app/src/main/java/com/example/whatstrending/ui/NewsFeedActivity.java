@@ -140,7 +140,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             }
         });
     }
-    ///TODO: Animation on rv following guide @ https://proandroiddev.com/enter-animation-using-recyclerview-and-layoutanimation-part-1-list-75a874a5d213
+
     private void initViews() {
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
@@ -196,7 +196,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             mNewsFeedRV.scheduleLayoutAnimation();
         }
     }
-
+    // Animation on rv following guide @ https://proandroiddev.com/enter-animation-using-recyclerview-and-layoutanimation-part-1-list-75a874a5d213
     private void initAnimations() {
         final LayoutAnimationController controller =
                 AnimationUtils.loadLayoutAnimation(mNewsFeedRV.getContext(), R.anim.layout_anim_fall_down);
