@@ -2,10 +2,12 @@ package com.example.whatstrending.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.whatstrending.Constants;
+import com.example.whatstrending.R;
 import com.example.whatstrending.data.AppRepository;
 import com.example.whatstrending.data.Article;
 
@@ -50,7 +52,24 @@ class HeadlinesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     @Override
     public RemoteViews getViewAt(int position) {
-        return null;
+        if (getCount() == 0) {
+            return null;
+        }
+
+        final Article article = mArticleList.get(position);
+
+        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_headline_list_item);
+        views.setTextViewText(R.id.title, article.getTitle());
+
+        Bundle extras = new Bundle();
+        extras.putInt(Constants.EXTRA_ARTICLE_ID, article.getId());
+
+        Intent intent = new Intent();
+        intent.putExtras(extras);
+
+        views.setOnClickFillInIntent(R.id.headline_list_item, intent);
+
+        return views;
     }
 
     @Override
@@ -60,12 +79,12 @@ class HeadlinesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
