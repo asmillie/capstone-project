@@ -55,7 +55,7 @@ public class LatestHeadlinesAppWidget extends AppWidgetProvider {
         viewArticleIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         viewArticleIntent.setAction(Constants.WIDGET_VIEW_ARTICLE_ACTION);
         //Set Pending Intent for each headline list item, assigning the view article intent to each
-        PendingIntent selectArticlePendingIntent = PendingIntent.getBroadcast(context,
+        PendingIntent selectArticlePendingIntent = PendingIntent.getActivity(context,
                 0,
                 viewArticleIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
