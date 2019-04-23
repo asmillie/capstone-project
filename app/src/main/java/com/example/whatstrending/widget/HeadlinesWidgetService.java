@@ -16,7 +16,7 @@ import java.util.List;
 public class HeadlinesWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return null;
+        return new HeadlinesRemoteViewsFactory(this.getApplicationContext());
     }
 }
 
