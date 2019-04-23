@@ -2,13 +2,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin"
-    style="@style/ThemeOverlay.MaterialComponents.Dark">
+    android:theme="@style/WidgetTheme">
 
     <ListView
         android:id="@+id/latest_headlines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/widget_list_description"/>
+        android:contentDescription="@string/widget_list_description"
+        android:padding="8dp"/>
 
     <TextView
         android:id="@+id/empty_view"

@@ -13,4 +13,10 @@
         <item name="android:textColor">@color/primaryDarkColor</item>
     </style>
 
+    <style name="WidgetTheme" parent="AppTheme">
+        <item name="android:background">#FFF</item>
+        <item name="android:textSize">@dimen/widget_text_size</item>
+        <item name="android:textColor">@color/primaryDarkColor</item>
+    </style>
+
 </resources>
