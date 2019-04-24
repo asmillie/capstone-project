@@ -22,6 +22,7 @@ public class NewsApiWorker extends Worker {
     private static final int PAGE_DEFAULT = 1;
     private static final int PAGE_SIZE_DEFAULT = 50;
     private static final int MAX_PAGES = 3; //For testing purposes limit number of pages retrieved
+    private static final String DEFAULT_CATEGORY = "technology"; //Retrieve only the tech headlines
 
     private final Context mContext;
     private int totalResults;
@@ -66,7 +67,7 @@ public class NewsApiWorker extends Worker {
         String countryCode = "us"; //TODO: If time, provide preference to set this
 
         NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
-        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(countryCode, PAGE_SIZE_DEFAULT, page);
+        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(countryCode, DEFAULT_CATEGORY,PAGE_SIZE_DEFAULT, page);
         NewsApiResponse response = null;
         try {
             response = call.execute().body();

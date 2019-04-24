@@ -13,6 +13,7 @@ public interface NewsApiService {
     @GET("top-headlines")
     Call<NewsApiResponse> getTopHeadlines(
             @Query("country") String countryCode,
+            @Query("category") String category,
             @Query("pageSize") int pageSize,
             @Query("page") int page
     );
