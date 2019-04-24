@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -57,6 +58,21 @@ public class ArticleActivity extends AppCompatActivity {
 
         initPager();
         initViewModel();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(Constants.EXTRA_ARTICLE_ID, mSelectedArticleId);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        if (savedInstanceState.containsKey(Constants.EXTRA_ARTICLE_ID)) {
+            mSelectedArticleId = savedInstanceState.getInt(Constants.EXTRA_ARTICLE_ID);
+            updatePager();
+        }
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
     }
 
     private void updatePager() {
