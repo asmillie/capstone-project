@@ -45,7 +45,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    //Firebase
+    //Firebase (Includes Google Analytics)
     implementation 'com.google.firebase:firebase-core:16.0.8'
 
     def arch_version = "1.1.1"
@@ -61,8 +61,6 @@ dependencies {
 
     //Google AdMob
     implementation 'com.google.android.gms:play-services-ads:17.2.0'
-    //Google Analytics
-    implementation 'com.google.android.gms:play-services-analytics:16.0.8'
 
     //Butterknife View Binding Library
     def butter_version = "8.8.1"
