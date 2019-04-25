@@ -3,7 +3,6 @@ package com.example.whatstrending.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -13,9 +12,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
@@ -52,7 +48,7 @@ public class ArticleActivity extends AppCompatActivity {
             if (articleId == Constants.EXTRA_ARTICLE_ID_DEFAULT) {
                 finish();
             } else {
-                mSelectedArticleId = articleId; //TODO: Preserve on activity state change
+                mSelectedArticleId = articleId;
             }
         }
 

@@ -97,10 +97,6 @@ public class ArticleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_article, container, false);
         mUnbinder = ButterKnife.bind(this, view);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(mToolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mToolbar.setTitle("");
 
         initViewModel();
@@ -118,6 +114,11 @@ public class ArticleFragment extends Fragment {
         if (mArticleId != Constants.EXTRA_ARTICLE_ID_DEFAULT && mViewModel == null) {
             initViewModel();
         }
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(mToolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.i(TAG, "Action bar set from fragment");
 
         super.onResume();
     }
