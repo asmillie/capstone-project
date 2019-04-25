@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
+import com.example.whatstrending.utils.AnalyticsUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -94,7 +95,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         @Override
         public void onClick(View v) {
-            int elementId = mArticleList.get(getAdapterPosition()).getId();
+            final int elementId = mArticleList.get(getAdapterPosition()).getId();
             mArticleClickListener.onArticleClick(elementId);
         }
     }

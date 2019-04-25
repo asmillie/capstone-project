@@ -2,6 +2,7 @@ package com.example.whatstrending.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.util.StringUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +27,8 @@ import android.view.animation.LayoutAnimationController;
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
+import com.example.whatstrending.utils.AnalyticsUtils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -42,6 +46,8 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
     private boolean mInitialLoad;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @BindView(R.id.news_feed_rv)
     RecyclerView mNewsFeedRV;
@@ -65,6 +71,8 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         ButterKnife.bind(this);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         mToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
 
@@ -84,6 +92,8 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @Override
     public void onArticleClick(int articleId) {
+        AnalyticsUtils.logArticleSelect(mFirebaseAnalytics, articleId);
+
         Intent intent = new Intent(NewsFeedActivity.this, ArticleActivity.class);
         intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
         startActivity(intent);
