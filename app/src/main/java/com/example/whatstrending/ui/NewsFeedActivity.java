@@ -48,7 +48,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
+    //Track if activity just loaded
     private boolean mInitialLoad;
+    //Track if user requested data update
+    private boolean mUserRefresh;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -83,6 +86,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         setSupportActionBar(mToolbar);
 
         mInitialLoad = true;
+        mUserRefresh = false;
 
         initViewModel();
         initViews();
@@ -139,8 +143,8 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                     updateList(); //User requested refresh, update immediately
                     mSwipeRefreshLayout.setRefreshing(false);
                 } else {
-                    if (mInitialLoad) {
-                        //Activity was just created, show data
+                    if (mInitialLoad || mUserRefresh) {
+                        //Activity was just created or user requested data refresh
                         updateList();
                         mInitialLoad = false;
                     } else {
@@ -174,6 +178,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mUserRefresh = true;
                 refreshList();
             }
         });
