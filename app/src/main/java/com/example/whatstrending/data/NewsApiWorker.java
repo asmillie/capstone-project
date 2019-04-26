@@ -58,11 +58,8 @@ public class NewsApiWorker extends Worker {
     }
 
     private void getTopHeadlinesPage(int page) {
-
-        String countryCode = "us"; //TODO: If time, provide preference to set this
-
         NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
-        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(countryCode, Constants.DEFAULT_CATEGORY, Constants.PAGE_SIZE_DEFAULT, page);
+        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(Constants.COUNTRY_CODE, Constants.DEFAULT_CATEGORY, Constants.PAGE_SIZE_DEFAULT, page);
         NewsApiResponse response = null;
         try {
             response = call.execute().body();
