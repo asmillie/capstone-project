@@ -47,6 +47,8 @@ dependencies {
 
     //Firebase (Includes Google Analytics)
     implementation 'com.google.firebase:firebase-core:16.0.8'
+    //Firebaes Admob
+    implementation 'com.google.firebase:firebase-ads:17.2.0'
 
     def arch_version = "1.1.1"
     //ViewModel & LiveData
@@ -58,9 +60,6 @@ dependencies {
     //Work Manager
     def work_version = "1.0.0"
     implementation "android.arch.work:work-runtime:$work_version"
-
-    //Google AdMob
-    implementation 'com.google.android.gms:play-services-ads:17.2.0'
 
     //Butterknife View Binding Library
     def butter_version = "8.8.1"
