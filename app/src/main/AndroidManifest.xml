@@ -42,11 +42,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.NewsFeedActivity" />
         </activity>
+        <activity android:name=".ui.SearchActivity"></activity>
 
-        <service android:name=".widget.HeadlinesWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false" />
-
+        <service
+            android:name=".widget.HeadlinesWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
