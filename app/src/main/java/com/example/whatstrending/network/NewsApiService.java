@@ -17,4 +17,13 @@ public interface NewsApiService {
             @Query("pageSize") int pageSize,
             @Query("page") int page
     );
+
+    @Headers("X-Api-Key: " + BuildConfig.NEWSAPI_API_KEY)
+    @GET("everything")
+    Call<NewsApiResponse> searchArticles(
+            @Query("q") String query,
+            @Query("language") String languageCode,
+            @Query("pageSize") int pageSize,
+            @Query("page") int page
+    );
 }

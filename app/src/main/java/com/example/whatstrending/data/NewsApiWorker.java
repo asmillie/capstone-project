@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.whatstrending.Constants;
 import com.example.whatstrending.network.NewsApiClient;
 import com.example.whatstrending.network.NewsApiService;
 
@@ -18,38 +19,32 @@ public class NewsApiWorker extends Worker {
 
     private static final String TAG = NewsApiWorker.class.getSimpleName();
 
-    private static final int TOTAL_RESULTS_DEFAULT = 0;
-    private static final int PAGE_DEFAULT = 1;
-    private static final int PAGE_SIZE_DEFAULT = 50;
-    private static final int MAX_PAGES = 3; //For testing purposes limit number of pages retrieved
-    private static final String DEFAULT_CATEGORY = "technology"; //Retrieve only the tech headlines
-
     private final Context mContext;
     private int totalResults;
 
     public NewsApiWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.mContext = context;
-        this.totalResults = TOTAL_RESULTS_DEFAULT;
+        this.totalResults = Constants.TOTAL_RESULTS_DEFAULT;
     }
 
     @NonNull
     @Override
     public Result doWork() {
 
-        int nextPage = PAGE_DEFAULT; //First page already fetched, start on 2nd
-        if (totalResults == TOTAL_RESULTS_DEFAULT) {
+        int nextPage = Constants.PAGE_DEFAULT; //First page already fetched, start on 2nd
+        if (totalResults == Constants.TOTAL_RESULTS_DEFAULT) {
             //Initial Article Refresh
-            getTopHeadlinesPage(PAGE_DEFAULT);
+            getTopHeadlinesPage(Constants.PAGE_DEFAULT);
             nextPage++;
         }
 
-        if (totalResults > PAGE_SIZE_DEFAULT) {
+        if (totalResults > Constants.PAGE_SIZE_DEFAULT) {
             //More Headlines available, request pages until all results retrieved (Capped for testing to MAX_PAGES)
             //Pagination calculation solution from https://stackoverflow.com/questions/17944/how-to-round-up-the-result-of-integer-division
-            int totalPages = (totalResults + PAGE_SIZE_DEFAULT - 1) / PAGE_SIZE_DEFAULT;
-            if (totalPages > MAX_PAGES) {
-                totalPages = MAX_PAGES;
+            int totalPages = (totalResults + Constants.PAGE_SIZE_DEFAULT - 1) / Constants.PAGE_SIZE_DEFAULT;
+            if (totalPages > Constants.MAX_PAGES) {
+                totalPages = Constants.MAX_PAGES;
             }
 
             while (nextPage <= totalPages) {
@@ -67,7 +62,7 @@ public class NewsApiWorker extends Worker {
         String countryCode = "us"; //TODO: If time, provide preference to set this
 
         NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
-        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(countryCode, DEFAULT_CATEGORY,PAGE_SIZE_DEFAULT, page);
+        Call<NewsApiResponse> call = newsApiService.getTopHeadlines(countryCode, Constants.DEFAULT_CATEGORY, Constants.PAGE_SIZE_DEFAULT, page);
         NewsApiResponse response = null;
         try {
             response = call.execute().body();
@@ -76,7 +71,7 @@ public class NewsApiWorker extends Worker {
         }
 
         if (response != null && response.getArticles() != null) {
-            if (totalResults == TOTAL_RESULTS_DEFAULT) {
+            if (totalResults == Constants.TOTAL_RESULTS_DEFAULT) {
                 totalResults = response.getTotalResults();
             }
 
