@@ -30,7 +30,6 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -53,7 +52,6 @@
             ads:adSize="@string/admob_banner_size"
             ads:adUnitId="@string/admob_sample_unit_id_banner"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/swipe_refresh_layout"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
