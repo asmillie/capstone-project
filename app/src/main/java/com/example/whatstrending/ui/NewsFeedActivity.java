@@ -28,6 +28,9 @@ import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.example.whatstrending.utils.AnalyticsUtils;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
@@ -61,6 +64,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
+    @BindView(R.id.adView)
+    AdView mAdView;
+
     @BindBool(R.bool.is_large_screen_device)
     boolean mIsLargeScreenDevice;
 
@@ -80,6 +86,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         initViewModel();
         initViews();
+        initAd();
         initAnimations();
         runNewsFeedAnimation();
     }
@@ -170,6 +177,12 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                 refreshList();
             }
         });
+    }
+
+    private void initAd() {
+        MobileAds.initialize(this, getString(R.string.admob_sample_app_id));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void showSnackBar() {

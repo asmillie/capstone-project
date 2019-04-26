@@ -3,6 +3,7 @@
 
     <string name="admob_sample_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="admob_sample_unit_id_banner" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_banner_size">BANNER</string>
 
     <!-- News Feed Activity -->
     <string name="view_article_btn">View Article</string>
