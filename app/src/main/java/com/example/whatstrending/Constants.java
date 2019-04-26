@@ -24,4 +24,5 @@ public class Constants {
     public static final int PAGE_SIZE_DEFAULT = 50;
     public static final int MAX_PAGES = 3; //For testing purposes limit number of pages retrieved
     public static final String DEFAULT_CATEGORY = "technology"; //Retrieve only the tech headlines
+    public static final String LANGUAGE_CODE = "en";
 }
