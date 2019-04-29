@@ -3,6 +3,7 @@ package com.example.whatstrending.ui;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -35,11 +36,13 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     private static final String TAG = SearchActivity.class.getSimpleName();
 
+    private static final String QUERY_EXTRA = "query";
+
     private FirebaseAnalytics mFirebaseAnalytics;
 
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
-    private int totalResults;
+    private String mQuery;
 
     @BindView(R.id.article_search_results)
     RecyclerView mArticleSearchResults;
@@ -58,15 +61,28 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        totalResults = Constants.TOTAL_RESULTS_DEFAULT;
-
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            //TODO: Loading spinner
-            //TODO: Run Search in AsyncTask
-            //TODO: Hide Spinner, Display Results in RecyclerView
+        if (savedInstanceState == null) {
+            Intent intent = getIntent();
+            if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+                mQuery = intent.getStringExtra(SearchManager.QUERY);
+                //TODO: Run Search in AsyncTask
+                //TODO: Hide Spinner, Display Results in RecyclerView
+            }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(QUERY_EXTRA, mQuery);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        if (savedInstanceState.containsKey(QUERY_EXTRA)) {
+            mQuery = savedInstanceState.getString(QUERY_EXTRA);
+        }
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
     }
 
     @Override
@@ -108,6 +124,12 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         mArticleSearchResults.setVisibility(View.VISIBLE);
     }
 
+    private void runSearch() {
+        if (mQuery != null && !mQuery.equals("")) {
+            new SearchAsyncTask().execute(mQuery);
+        }
+    }
+
     private class SearchAsyncTask extends AsyncTask<String, Void, List<Article>> {
 
         @Override
@@ -117,6 +139,10 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
         @Override
         protected List<Article> doInBackground(String... query) {
+            if (query[0] == null || query[0].equals("")) {
+                return null;
+            }
+            
             String urlEncodedQuery = TextUtils.htmlEncode(query[0]); //NewsAPI Requires search query to be Url-encoded
 
             NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
@@ -133,10 +159,6 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             }
 
             if (response != null && response.getArticles() != null) {
-                if (totalResults == Constants.TOTAL_RESULTS_DEFAULT) {
-                    totalResults = response.getTotalResults();
-                }
-
                 return response.getArticles();
             }
 
@@ -146,8 +168,8 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         @Override
         protected void onPostExecute(List<Article> articles) {
             mArticleList = articles;
+            mArticleListAdapter.notifyDataSetChanged();
             showSearchResults();
-            //TODO: Notify adapter
         }
     }
 }
