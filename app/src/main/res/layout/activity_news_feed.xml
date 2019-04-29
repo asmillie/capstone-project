@@ -18,6 +18,11 @@
             android:layout_gravity="bottom"
             app:layout_scrollFlags="scroll|enterAlways">
 
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_articles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

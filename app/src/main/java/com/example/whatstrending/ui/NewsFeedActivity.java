@@ -1,8 +1,10 @@
 package com.example.whatstrending.ui;
 
+import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.util.StringUtil;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -70,6 +73,9 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     @BindView(R.id.adView)
     AdView mAdView;
 
+    @BindView(R.id.search_articles)
+    SearchView mSearchView;
+
     @BindBool(R.bool.is_large_screen_device)
     boolean mIsLargeScreenDevice;
     //TODO: Check network connectivity, show error dialog if none
@@ -114,6 +120,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_news_feed, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setIconifiedByDefault(true);
         return true;
     }
 
