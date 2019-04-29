@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/news_feed_padding"
-        android:paddingEnd="@dimen/news_feed_padding"
-        android:visibility="gone"/>
+        android:paddingEnd="@dimen/news_feed_padding"/>
 
     <ProgressBar
         android:id="@+id/loading_bar"

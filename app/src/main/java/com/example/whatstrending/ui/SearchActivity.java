@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
@@ -57,7 +58,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
+        Log.i(TAG, "onCreate for SearchActivity");
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -67,6 +68,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             Intent intent = getIntent();
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 mQuery = intent.getStringExtra(SearchManager.QUERY);
+                Log.i(TAG, "Received search query: " + mQuery);
                 runSearch();
             }
         }
@@ -131,6 +133,10 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         }
     }
 
+    private void noResults() {
+        Toast.makeText(this, "No results returned by search", Toast.LENGTH_SHORT).show();
+    }
+
     private class SearchAsyncTask extends AsyncTask<String, Void, List<Article>> {
 
         @Override
@@ -160,6 +166,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             }
 
             if (response != null && response.getArticles() != null) {
+                Log.i(TAG, "Total results: " + response.getTotalResults());
                 return response.getArticles();
             }
 
@@ -168,9 +175,14 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
         @Override
         protected void onPostExecute(List<Article> articles) {
-            mArticleList = articles;
-            mArticleListAdapter.notifyDataSetChanged();
-            showSearchResults();
+            if (articles == null || articles.size() == 0) {
+                noResults();
+            } else {
+                mArticleList = articles;
+                mArticleListAdapter.setArticleList(mArticleList);
+                mArticleListAdapter.notifyDataSetChanged();
+                showSearchResults();
+            }
         }
     }
 }

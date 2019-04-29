@@ -1,9 +1,11 @@
 package com.example.whatstrending.ui;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.util.StringUtil;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -96,6 +98,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         initViewModel();
         initViews();
+        initSearch();
         initAd();
         initAnimations();
         runNewsFeedAnimation();
@@ -120,10 +123,6 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_news_feed, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setIconifiedByDefault(true);
         return true;
     }
 
@@ -192,6 +191,17 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
                 refreshList();
             }
         });
+    }
+
+    private void initSearch() {
+        ComponentName cn = new ComponentName(this, SearchActivity.class);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(cn);
+
+        mSearchView.setSearchableInfo(searchableInfo);
+        mSearchView.setIconifiedByDefault(true);
+        mSearchView.setSubmitButtonEnabled(true);
     }
 
     private void initAd() {
