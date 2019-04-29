@@ -61,12 +61,13 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        initViews();
+
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 mQuery = intent.getStringExtra(SearchManager.QUERY);
-                //TODO: Run Search in AsyncTask
-                //TODO: Hide Spinner, Display Results in RecyclerView
+                runSearch();
             }
         }
     }
@@ -142,7 +143,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             if (query[0] == null || query[0].equals("")) {
                 return null;
             }
-            
+
             String urlEncodedQuery = TextUtils.htmlEncode(query[0]); //NewsAPI Requires search query to be Url-encoded
 
             NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
