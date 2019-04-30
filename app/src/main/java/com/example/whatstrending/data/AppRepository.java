@@ -30,8 +30,8 @@ public class AppRepository {
         return sInstance;
     }
 
-    public LiveData<List<Article>> getAllHeadlines() {
-        return mDatabase.articleDao().getAllHeadlines();
+    public LiveData<List<Article>> getAllArticlesByCategory(String category) {
+        return mDatabase.articleDao().getAllArticlesByCategory(category);
     }
 
     public void refreshHeadlines() {
@@ -44,16 +44,16 @@ public class AppRepository {
         }
     }
 
-    public void deleteAllHeadlines() {
-        mDatabase.articleDao().deleteAllArticles();
+    public void deleteAllArticlesByCategory(String category) {
+        mDatabase.articleDao().deleteAllArticlesByCategory(category);
     }
 
     public LiveData<Article> getArticleById(int id) {
         return mDatabase.articleDao().getArticleById(id);
     }
 
-    public LiveData<List<Article>> getAllArticleIds() {
-        return mDatabase.articleDao().getAllArticleIds();
+    public LiveData<List<Article>> getAllArticleIdsByCategory(String category) {
+        return mDatabase.articleDao().getAllArticleIdsByCategory(category);
     }
 
     /*
@@ -61,12 +61,5 @@ public class AppRepository {
      */
     public List<Article> getTopHeadlines(int limit) {
         return mDatabase.articleDao().getTopHeadlines(limit);
-    }
-
-    ////// Private Methods //////
-
-    private boolean isArticleListEmpty(LiveData<List<Article>> articles) {
-        List<Article> articleList = articles.getValue();
-        return articleList == null || articleList.size() == 0;
     }
 }

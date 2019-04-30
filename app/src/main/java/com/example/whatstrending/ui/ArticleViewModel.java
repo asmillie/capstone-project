@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
+import com.example.whatstrending.Constants;
 import com.example.whatstrending.data.AppRepository;
 import com.example.whatstrending.data.Article;
 
@@ -28,6 +29,6 @@ public class ArticleViewModel extends AndroidViewModel {
     }
 
     private void refreshArticleIds() {
-        mArticleIds = mRepository.getAllArticleIds();
+        mArticleIds = mRepository.getAllArticleIdsByCategory(Constants.ARTICLE_CATEGORY_HEADLINE);
     }
 }

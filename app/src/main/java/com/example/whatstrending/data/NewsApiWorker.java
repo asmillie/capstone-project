@@ -84,6 +84,8 @@ public class NewsApiWorker extends Worker {
                 if (sourceName != null && !sourceName.equals("")) {
                     article.setNewsSource(sourceName);
                 }
+                //Set Category
+                article.setCategory(Constants.ARTICLE_CATEGORY_HEADLINE);
             }
             Log.i(TAG, "Saving articles");
             AppRepository.getInstance(mContext).saveArticles(articles);

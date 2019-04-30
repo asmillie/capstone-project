@@ -26,4 +26,8 @@ public class Constants {
     public static final String DEFAULT_CATEGORY = "technology"; //Retrieve only the tech headlines
     public static final String LANGUAGE_CODE = "en";
     public static final String COUNTRY_CODE = "us";
+
+    /** Article Categories **/
+    public static final String ARTICLE_CATEGORY_HEADLINE = "headline";
+    public static final String ARTICLE_CATEGORY_SEARCH_RESULT = "search_result";
 }

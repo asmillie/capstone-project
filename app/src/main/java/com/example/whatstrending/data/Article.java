@@ -19,6 +19,8 @@ public class Article {
     @ColumnInfo(name = "news_source")
     private String newsSource;
 
+    private String category;
+
     @SerializedName("source")
     @Expose
     @Ignore
@@ -125,5 +127,13 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
