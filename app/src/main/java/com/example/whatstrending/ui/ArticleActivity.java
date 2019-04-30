@@ -28,6 +28,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     private List<Article> mArticleIds;
     private int mSelectedArticleId = Constants.EXTRA_ARTICLE_ID_DEFAULT;
+    private String mArticleCategory;
 
     private ArticlePagerAdapter mPagerAdapter;
 
@@ -44,6 +45,7 @@ public class ArticleActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             final int articleId = intent.getIntExtra(Constants.EXTRA_ARTICLE_ID, Constants.EXTRA_ARTICLE_ID_DEFAULT);
+            mArticleCategory = intent.getStringExtra(Constants.EXTRA_CATEGORY);
 
             if (articleId == Constants.EXTRA_ARTICLE_ID_DEFAULT) {
                 finish();
@@ -96,6 +98,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     private void initViewModel() {
         ArticleViewModel viewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
+        viewModel.setArticleCategory(mArticleCategory);
         viewModel.getArticleIds().observe(this, new Observer<List<Article>>() {
             @Override
             public void onChanged(@Nullable List<Article> articles) {

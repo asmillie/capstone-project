@@ -8,7 +8,6 @@ public class Constants {
     private static final String APP_BASE_URI = "com.example.whatstrending";
 
     public static final String EXTRA_ARTICLE_ID = "article-id";
-
     public static final int EXTRA_ARTICLE_ID_DEFAULT = -1;
 
     /** Widget **/
@@ -28,6 +27,7 @@ public class Constants {
     public static final String COUNTRY_CODE = "us";
 
     /** Article Categories **/
+    public static final String EXTRA_CATEGORY = "category";
     public static final String ARTICLE_CATEGORY_HEADLINE = "headline";
     public static final String ARTICLE_CATEGORY_SEARCH_RESULT = "search_result";
 }

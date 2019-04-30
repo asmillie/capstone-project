@@ -15,10 +15,12 @@ public class ArticleViewModel extends AndroidViewModel {
 
     private final AppRepository mRepository;
     private LiveData<List<Article>> mArticleIds;
+    private String mArticleCategory;
 
     public ArticleViewModel(@NonNull Application application) {
         super(application);
         mRepository = AppRepository.getInstance(application.getApplicationContext());
+        setArticleCategory(Constants.ARTICLE_CATEGORY_HEADLINE); //Default to Headlines
     }
 
     public LiveData<List<Article>> getArticleIds() {
@@ -28,7 +30,11 @@ public class ArticleViewModel extends AndroidViewModel {
         return mArticleIds;
     }
 
+    public void setArticleCategory(String category) {
+        mArticleCategory = category;
+    }
+
     private void refreshArticleIds() {
-        mArticleIds = mRepository.getAllArticleIdsByCategory(Constants.ARTICLE_CATEGORY_HEADLINE);
+        mArticleIds = mRepository.getAllArticleIdsByCategory(mArticleCategory);
     }
 }

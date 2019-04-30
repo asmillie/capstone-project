@@ -112,6 +112,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
         Intent intent = new Intent(SearchActivity.this, ArticleActivity.class);
         intent.putExtra(Constants.EXTRA_ARTICLE_ID, articleId);
+        intent.putExtra(Constants.EXTRA_CATEGORY, Constants.ARTICLE_CATEGORY_SEARCH_RESULT);
         startActivity(intent);
     }
 
