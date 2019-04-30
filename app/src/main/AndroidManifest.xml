@@ -39,11 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ArticleActivity"
-            android:parentActivityName=".ui.NewsFeedActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.NewsFeedActivity" />
+            android:name=".ui.ArticleActivity">
         </activity>
         <activity android:name=".ui.SearchActivity">
             <intent-filter>

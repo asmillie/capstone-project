@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
@@ -71,6 +72,14 @@ public class ArticleActivity extends AppCompatActivity {
             updatePager();
         }
         super.onRestoreInstanceState(savedInstanceState, persistentState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updatePager() {
