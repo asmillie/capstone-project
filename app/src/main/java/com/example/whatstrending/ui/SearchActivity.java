@@ -1,9 +1,12 @@
 package com.example.whatstrending.ui;
 
 import android.app.SearchManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -21,6 +24,7 @@ import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.example.whatstrending.data.NewsApiResponse;
+import com.example.whatstrending.data.SearchArticlesIntentService;
 import com.example.whatstrending.network.NewsApiClient;
 import com.example.whatstrending.network.NewsApiService;
 import com.example.whatstrending.utils.AnalyticsUtils;
@@ -42,6 +46,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    private SearchViewModel mViewModel;
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private String mQuery;
@@ -66,13 +71,15 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        initViewModel();
         initViews();
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 mQuery = intent.getStringExtra(SearchManager.QUERY);
-                runSearch();
+                SearchArticlesIntentService.startActionSearchArticles(this, mQuery);
+                showLoading();
             }
         }
     }
@@ -122,6 +129,28 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         mArticleListAdapter.setArticleList(mArticleList);
     }
 
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+
+        mViewModel.getArticleSearchResults().observe(this, new Observer<List<Article>>() {
+            @Override
+            public void onChanged(@Nullable List<Article> articles) {
+                if (articles != null && articles.size() != 0) {
+                    mArticleList = articles;
+                    updateList();
+                } else {
+                    showLoading();
+                }
+            }
+        });
+    }
+
+    private void updateList() {
+        mArticleListAdapter.setArticleList(mArticleList);
+        mArticleListAdapter.notifyDataSetChanged();
+        showSearchResults();
+    }
+
     private void showLoading() {
         mLoadingBar.setVisibility(View.VISIBLE);
         mArticleSearchResults.setVisibility(View.GONE);
@@ -130,64 +159,5 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     private void showSearchResults() {
         mLoadingBar.setVisibility(View.GONE);
         mArticleSearchResults.setVisibility(View.VISIBLE);
-    }
-
-    private void runSearch() {
-        if (mQuery != null && !mQuery.equals("")) {
-            new SearchAsyncTask().execute(mQuery);
-        }
-    }
-
-    private void noResults() {
-        Toast.makeText(this, "No results returned by search", Toast.LENGTH_SHORT).show();
-    }
-
-    private class SearchAsyncTask extends AsyncTask<String, Void, List<Article>> {
-
-        @Override
-        protected void onPreExecute() {
-            showLoading();
-        }
-
-        @Override
-        protected List<Article> doInBackground(String... query) {
-            if (query[0] == null || query[0].equals("")) {
-                return null;
-            }
-
-            String urlEncodedQuery = TextUtils.htmlEncode(query[0]); //NewsAPI Requires search query to be Url-encoded
-
-            NewsApiService newsApiService = NewsApiClient.getInstance().getNewsApi();
-            Call<NewsApiResponse> call = newsApiService.searchArticles(urlEncodedQuery,
-                    Constants.LANGUAGE_CODE,
-                    Constants.PAGE_SIZE_DEFAULT,
-                    Constants.PAGE_DEFAULT);
-
-            NewsApiResponse response = null;
-            try {
-                response = call.execute().body();
-            } catch (IOException e) {
-                Log.e(TAG, "Error contacting News Api: " + e.toString());
-            }
-
-            if (response != null && response.getArticles() != null) {
-                Log.i(TAG, "Total results: " + response.getTotalResults());
-                return response.getArticles();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<Article> articles) {
-            if (articles == null || articles.size() == 0) {
-                noResults();
-            } else {
-                mArticleList = articles;
-                mArticleListAdapter.setArticleList(mArticleList);
-                mArticleListAdapter.notifyDataSetChanged();
-                showSearchResults();
-            }
-        }
     }
 }
