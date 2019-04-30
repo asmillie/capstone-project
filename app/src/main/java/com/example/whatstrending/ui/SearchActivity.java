@@ -118,6 +118,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     private void initViews() {
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(getString(R.string.search_title));
 
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
