@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whatstrending.Constants;
@@ -66,6 +67,9 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     @BindView(R.id.search_articles)
     SearchView mSearchView;
+
+    @BindView(R.id.empty_view)
+    TextView mEmptyView;
 
     @BindBool(R.bool.is_large_screen_device)
     boolean mIsLargeScreenDevice;
@@ -149,7 +153,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
                     mArticleList = articles;
                     updateList();
                 } else {
-                    showLoading();
+                    showEmptyResults();
                 }
             }
         });
@@ -173,10 +177,19 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     private void showLoading() {
         mLoadingBar.setVisibility(View.VISIBLE);
         mArticleSearchResults.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+
     }
 
     private void showSearchResults() {
         mLoadingBar.setVisibility(View.GONE);
         mArticleSearchResults.setVisibility(View.VISIBLE);
+        mEmptyView.setVisibility(View.GONE);
+    }
+
+    private void showEmptyResults() {
+        mLoadingBar.setVisibility(View.GONE);
+        mArticleSearchResults.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 }

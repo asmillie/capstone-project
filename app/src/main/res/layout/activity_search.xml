@@ -38,6 +38,15 @@
             android:paddingStart="@dimen/news_feed_padding"
             android:paddingEnd="@dimen/news_feed_padding" />
 
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results_found"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"/>
+
         <ProgressBar
             android:id="@+id/loading_bar"
             android:layout_width="wrap_content"
