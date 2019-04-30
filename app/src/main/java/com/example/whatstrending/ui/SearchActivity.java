@@ -1,8 +1,11 @@
 package com.example.whatstrending.ui;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
@@ -13,6 +16,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,6 +64,9 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     @BindView(R.id.loading_bar)
     ProgressBar mLoadingBar;
 
+    @BindView(R.id.search_articles)
+    SearchView mSearchView;
+
     @BindBool(R.bool.is_large_screen_device)
     boolean mIsLargeScreenDevice;
 
@@ -73,6 +80,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
         initViewModel();
         initViews();
+        initSearch();
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -143,6 +151,15 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
                 }
             }
         });
+    }
+
+    private void initSearch() {
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+
+        mSearchView.setSearchableInfo(searchableInfo);
+        mSearchView.setIconifiedByDefault(true);
+        mSearchView.setSubmitButtonEnabled(true);
     }
 
     private void updateList() {
