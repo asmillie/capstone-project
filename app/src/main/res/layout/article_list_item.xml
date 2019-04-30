@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:paddingLeft="@dimen/news_feed_padding"
-        android:paddingStart="@dimen/news_feed_padding"/>
+        android:paddingStart="@dimen/news_feed_padding"
+        android:minWidth="@dimen/article_list_item_image_minWidth"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.whatstrending.ui;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
@@ -7,12 +8,15 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.arch.persistence.room.util.StringUtil;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.card.MaterialCardView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +26,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +38,7 @@ import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
 import com.example.whatstrending.utils.AnalyticsUtils;
+import com.example.whatstrending.utils.NetworkUtils;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -53,6 +59,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private Snackbar mSnackbar;
+    private Dialog mAlertDialog;
     //Track if activity just loaded
     private boolean mInitialLoad;
     //Track if user requested data update
@@ -107,7 +114,12 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     @Override
     protected void onResume() {
         super.onResume();
-        runNewsFeedAnimation();
+        if (!NetworkUtils.isConnected(this)) {
+            //Show offline mode
+            noInternetDialog();
+        } else {
+            runNewsFeedAnimation();
+        }
     }
 
     @Override
@@ -188,8 +200,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mUserRefresh = true;
-                refreshList();
+                if (NetworkUtils.isConnected(NewsFeedActivity.this)) {
+                    mUserRefresh = true;
+                    refreshList();
+                }
             }
         });
     }
@@ -249,5 +263,29 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     private void runNewsFeedAnimation() {
         mNewsFeedRV.scheduleLayoutAnimation();
+    }
+
+    private void noInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewsFeedActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        builder.setView(inflater.inflate(R.layout.alert_dialog_no_internet, null))
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAlertDialog.cancel();
+                    }
+                });
+
+        mAlertDialog = builder.create();
+        mAlertDialog.show();
     }
 }

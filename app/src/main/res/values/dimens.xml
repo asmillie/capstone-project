@@ -13,6 +13,10 @@
     <dimen name="article_margin">10dp</dimen>
     <dimen name="article_margin_double">20dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
+    <dimen name="article_list_item_image_minWidth">50dp</dimen>
+
+    <!-- No Internet Dialog -->
+    <dimen name="dialog_margin">16dp</dimen>
 
     <!--
     Refer to App Widget Documentation for margin information
@@ -20,4 +24,5 @@
     -->
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="widget_text_size">14sp</dimen>
+
 </resources>

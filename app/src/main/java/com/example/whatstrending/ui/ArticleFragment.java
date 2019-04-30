@@ -167,7 +167,10 @@ public class ArticleFragment extends Fragment {
             Log.i(TAG, "Populating views for article " + mArticleId);
             String articleImage = mArticle.getUrlToImage();
             if (articleImage != null && !articleImage.equals("")) {
-                Picasso.get().load(articleImage).into(mArticleImage);
+                Picasso.get()
+                        .load(articleImage)
+                        .error(R.drawable.ic_broken_image)
+                        .into(mArticleImage);
             }
 
             mTitle.setText(mArticle.getTitle());

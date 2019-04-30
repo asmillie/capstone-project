@@ -67,6 +67,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
                     .load(articleImage)
                     .resize(350, 350)
                     .centerCrop(Gravity.TOP)
+                    .error(R.drawable.ic_broken_image)
                     .into(holder.mArticleImage);
         }
     }

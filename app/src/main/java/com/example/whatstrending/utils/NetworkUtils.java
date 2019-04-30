@@ -1,10 +1,12 @@
 package com.example.whatstrending.utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 
 import com.example.whatstrending.R;
 
@@ -29,11 +31,5 @@ public class NetworkUtils {
         }
 
         return isConnected;
-    }
-
-    public static void showAlertNoConnectivity(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(R.string.no_internet_message);
-        builder.create().show();
     }
 }
