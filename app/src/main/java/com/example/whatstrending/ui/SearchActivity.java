@@ -1,15 +1,18 @@
 package com.example.whatstrending.ui;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +23,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +37,7 @@ import com.example.whatstrending.data.SearchArticlesIntentService;
 import com.example.whatstrending.network.NewsApiClient;
 import com.example.whatstrending.network.NewsApiService;
 import com.example.whatstrending.utils.AnalyticsUtils;
+import com.example.whatstrending.utils.NetworkUtils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
@@ -55,6 +60,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private String mQuery;
+    private Dialog mAlertDialog;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -93,6 +99,15 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
                 SearchArticlesIntentService.startActionSearchArticles(this, mQuery);
                 showLoading();
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!NetworkUtils.isConnected(this)) {
+            //Show offline mode
+            noInternetDialog();
         }
     }
 
@@ -191,5 +206,29 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         mLoadingBar.setVisibility(View.GONE);
         mArticleSearchResults.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+    }
+
+    private void noInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        builder.setView(inflater.inflate(R.layout.alert_dialog_no_internet, null))
+                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mAlertDialog.cancel();
+                    }
+                });
+
+        mAlertDialog = builder.create();
+        mAlertDialog.show();
     }
 }
