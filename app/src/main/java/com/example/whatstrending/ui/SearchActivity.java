@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,9 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     private ArticleListAdapter mArticleListAdapter;
     private String mQuery;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @BindView(R.id.article_search_results)
     RecyclerView mArticleSearchResults;
 
@@ -58,7 +62,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Log.i(TAG, "onCreate for SearchActivity");
+
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -68,7 +72,6 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             Intent intent = getIntent();
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 mQuery = intent.getStringExtra(SearchManager.QUERY);
-                Log.i(TAG, "Received search query: " + mQuery);
                 runSearch();
             }
         }
@@ -98,6 +101,8 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     }
 
     private void initViews() {
+        setSupportActionBar(mToolbar);
+
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
         RecyclerView.LayoutManager layoutManager;
