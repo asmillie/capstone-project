@@ -3,6 +3,7 @@ package com.example.whatstrending.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -33,6 +35,9 @@ public class ArticleActivity extends AppCompatActivity {
 
     private ArticlePagerAdapter mPagerAdapter;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @BindView(R.id.article_fragment_pager)
     ViewPager mPager;
 
@@ -42,6 +47,9 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
 
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -123,7 +131,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     private class ArticlePagerAdapter extends FragmentStatePagerAdapter {
 
-        public ArticlePagerAdapter(FragmentManager fm) {
+        ArticlePagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
