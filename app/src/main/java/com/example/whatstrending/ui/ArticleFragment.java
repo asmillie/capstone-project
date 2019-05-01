@@ -180,7 +180,11 @@ public class ArticleFragment extends Fragment {
 
             mAuthor.setText(mArticle.getAuthor());
 
-            mContent.setText(mArticle.getContent());
+            String content = mArticle.getContent();
+            if (content == null || content.equals("")) {
+                content = getResources().getString(R.string.no_content);
+            }
+            mContent.setText(content);
         }
     }
 }

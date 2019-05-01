@@ -37,4 +37,5 @@
     <string name="retry">Retry</string>
     <string name="close">Close</string>
     <string name="no_results_found">No Results Found</string>
+    <string name="no_content">No content provided</string>
 </resources>
