@@ -87,7 +87,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @BindBool(R.bool.is_large_screen_device)
     boolean mIsLargeScreenDevice;
-    //TODO: Check network connectivity, show error dialog if none
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

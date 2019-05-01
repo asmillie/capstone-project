@@ -1,7 +1,11 @@
 package com.example.whatstrending.ui;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -41,6 +46,9 @@ public class ArticleActivity extends AppCompatActivity {
     @BindView(R.id.article_fragment_pager)
     ViewPager mPager;
 
+    @BindView(R.id.search_articles)
+    SearchView mSearchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +73,7 @@ public class ArticleActivity extends AppCompatActivity {
 
         initPager();
         initViewModel();
+        initSearch();
     }
 
     @Override
@@ -111,6 +120,17 @@ public class ArticleActivity extends AppCompatActivity {
     private void initPager() {
         mPagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+    }
+
+    private void initSearch() {
+        ComponentName cn = new ComponentName(this, SearchActivity.class);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(cn);
+
+        mSearchView.setSearchableInfo(searchableInfo);
+        mSearchView.setIconifiedByDefault(true);
+        mSearchView.setSubmitButtonEnabled(true);
     }
 
     private void initViewModel() {
