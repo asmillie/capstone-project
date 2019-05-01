@@ -89,6 +89,8 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         ButterKnife.bind(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        showLoading();
+
         initViewModel();
         initViews();
         initSearch();
@@ -98,7 +100,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
             if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
                 mQuery = intent.getStringExtra(SearchManager.QUERY);
                 SearchArticlesIntentService.startActionSearchArticles(this, mQuery);
-                showLoading();
+
             }
         }
     }
