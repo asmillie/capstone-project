@@ -24,6 +24,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -126,6 +127,14 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onArticleClick(int articleId) {
         AnalyticsUtils.logArticleSelect(mFirebaseAnalytics, articleId);
 
@@ -138,6 +147,7 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     private void initViews() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(getString(R.string.search_title));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
