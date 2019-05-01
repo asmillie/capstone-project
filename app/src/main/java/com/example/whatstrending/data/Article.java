@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "articles",
-    indices = {@Index(value = {"title", "content"}, unique = true)})
+    indices = {@Index(value = {"title"}, unique = true)})
 public class Article {
 
     @PrimaryKey(autoGenerate = true)
