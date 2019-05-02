@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import com.example.whatstrending.data.AppRepository;
 import com.example.whatstrending.data.Article;
 
-class ArticleFragmentViewModel extends ViewModel {
+public class ArticleFragmentViewModel extends ViewModel {
 
     private final AppRepository mRepository;
     private final int mArticleId;

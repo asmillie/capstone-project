@@ -11,7 +11,7 @@ import com.example.whatstrending.data.Article;
 
 import java.util.List;
 
-class NewsFeedViewModel extends AndroidViewModel {
+public class NewsFeedViewModel extends AndroidViewModel {
 
     private final AppRepository mRepository;
     private LiveData<List<Article>> mArticles;

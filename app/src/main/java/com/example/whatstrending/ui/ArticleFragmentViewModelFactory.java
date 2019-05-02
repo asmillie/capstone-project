@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.example.whatstrending.data.AppRepository;
 
-class ArticleFragmentViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
+public class ArticleFragmentViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
 
     private final AppRepository mRepository;
     private final int mArticleId;
