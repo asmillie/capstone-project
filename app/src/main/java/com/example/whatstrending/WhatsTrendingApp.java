@@ -5,7 +5,7 @@ import android.app.Application;
 import com.example.whatstrending.utils.WorkUtils;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
-class WhatsTrendingApp extends Application {
+public class WhatsTrendingApp extends Application {
 
     @Override
     public void onCreate() {

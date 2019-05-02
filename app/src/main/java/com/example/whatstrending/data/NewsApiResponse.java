@@ -9,7 +9,7 @@ This class and its children generated through the tool
 @ http://www.jsonschema2pojo.org/
  */
 
-class NewsApiResponse {
+public class NewsApiResponse {
 
     @SerializedName("status")
     @Expose
