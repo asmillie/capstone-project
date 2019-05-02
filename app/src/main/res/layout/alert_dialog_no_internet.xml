@@ -26,7 +26,6 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"/>
 
     <TextView
-        android:id="@+id/body_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/network_unavailable_message"

@@ -5,11 +5,9 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -21,33 +19,25 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.whatstrending.Constants;
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
-import com.example.whatstrending.data.NewsApiResponse;
 import com.example.whatstrending.data.SearchArticlesIntentService;
-import com.example.whatstrending.network.NewsApiClient;
-import com.example.whatstrending.network.NewsApiService;
 import com.example.whatstrending.utils.AnalyticsUtils;
 import com.example.whatstrending.utils.NetworkUtils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
 
 public class SearchActivity extends AppCompatActivity implements ArticleListAdapter.ArticleClickListener {
 
@@ -57,7 +47,6 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    private SearchViewModel mViewModel;
     private List<Article> mArticleList;
     private ArticleListAdapter mArticleListAdapter;
     private String mQuery;
@@ -148,8 +137,10 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
 
     private void initViews() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle(getString(R.string.search_title));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(getString(R.string.search_title));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mArticleListAdapter = new ArticleListAdapter(null, this);
 
@@ -171,17 +162,14 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
     }
 
     private void initViewModel() {
-        mViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        SearchViewModel viewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
-        mViewModel.getArticleSearchResults().observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(@Nullable List<Article> articles) {
-                if (articles != null && articles.size() != 0) {
-                    mArticleList = articles;
-                    updateList();
-                } else {
-                    showEmptyResults();
-                }
+        viewModel.getArticleSearchResults().observe(this, articles -> {
+            if (articles != null && articles.size() != 0) {
+                mArticleList = articles;
+                updateList();
+            } else {
+                showEmptyResults();
             }
         });
     }
@@ -225,20 +213,12 @@ public class SearchActivity extends AppCompatActivity implements ArticleListAdap
         LayoutInflater inflater = getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.alert_dialog_no_internet, null))
-                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
-                        finish();
-                        startActivity(getIntent());
-                    }
+                .setPositiveButton(R.string.retry, (dialog, which) -> {
+                    //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
+                    finish();
+                    startActivity(getIntent());
                 })
-                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mAlertDialog.cancel();
-                    }
-                });
+                .setNegativeButton(R.string.close, (dialog, which) -> mAlertDialog.cancel());
 
         mAlertDialog = builder.create();
         mAlertDialog.show();

@@ -1,7 +1,6 @@
 package com.example.whatstrending.ui;
 
 import android.content.Context;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -9,15 +8,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.whatstrending.R;
 import com.example.whatstrending.data.Article;
-import com.example.whatstrending.utils.AnalyticsUtils;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import java.util.List;
 
@@ -29,7 +25,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     private static final String TAG = ArticleListAdapter.class.getSimpleName();
 
     private List<Article> mArticleList;
-    private Context mContext;
     private final ArticleClickListener mArticleClickListener;
 
     public interface ArticleClickListener {
@@ -48,8 +43,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     @NonNull
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
-        View view = LayoutInflater.from(mContext)
+        Context context = parent.getContext();
+        View view = LayoutInflater.from(context)
                 .inflate(R.layout.article_list_item, parent, false);
 
         return new ArticleViewHolder(view);
@@ -88,7 +83,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         @BindView(R.id.list_item)
         ConstraintLayout mListItem;
 
-        public ArticleViewHolder(@NonNull View itemView) {
+        ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mListItem.setOnClickListener(this);

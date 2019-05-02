@@ -9,8 +9,6 @@ import java.util.List;
 
 public class AppRepository {
 
-    private final static String TAG = AppRepository.class.getSimpleName();
-
     private static final Object LOCK = new Object();
     private static AppRepository sInstance;
 

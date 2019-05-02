@@ -13,7 +13,7 @@ public class Constants {
     /** Widget **/
     public static final int WIDGET_HEADLINE_LIMIT = 25;
 
-    public static final String WIDGET_ACTION_PREFIX = APP_BASE_URI + ".WIDGET_ACTION.";
+    private static final String WIDGET_ACTION_PREFIX = APP_BASE_URI + ".WIDGET_ACTION.";
 
     public static final String WIDGET_VIEW_ARTICLE_ACTION = WIDGET_ACTION_PREFIX + "VIEW_ARTICLE";
 

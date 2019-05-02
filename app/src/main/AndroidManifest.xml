@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <service
             android:name=".data.SearchArticlesIntentService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -5,14 +5,12 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.util.StringUtil;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.card.MaterialCardView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,7 +22,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -141,11 +138,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh_action:
-                mSwipeRefreshLayout.setRefreshing(true);
-                refreshList();
-                return true;
+        if (item.getItemId() == R.id.refresh_action) {
+            mSwipeRefreshLayout.setRefreshing(true);
+            refreshList();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -153,26 +149,23 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
     private void initViewModel() {
         mViewModel = ViewModelProviders.of(this).get(NewsFeedViewModel.class);
 
-        mViewModel.getAllArticles().observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(@Nullable List<Article> articles) {
-                mArticleList = articles;
-                if (articles == null || articles.size() == 0) {
-                    return;
-                }
-                Log.i(TAG, "Observed changed to article list and list contains items");
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    updateList(); //User requested refresh, update immediately
-                    mSwipeRefreshLayout.setRefreshing(false);
+        mViewModel.getAllArticles().observe(this, articles -> {
+            mArticleList = articles;
+            if (articles == null || articles.size() == 0) {
+                return;
+            }
+            Log.i(TAG, "Observed changed to article list and list contains items");
+            if (mSwipeRefreshLayout.isRefreshing()) {
+                updateList(); //User requested refresh, update immediately
+                mSwipeRefreshLayout.setRefreshing(false);
+            } else {
+                if (mInitialLoad || mUserRefresh) {
+                    //Activity was just created or user requested data refresh
+                    updateList();
+                    mInitialLoad = false;
                 } else {
-                    if (mInitialLoad || mUserRefresh) {
-                        //Activity was just created or user requested data refresh
-                        updateList();
-                        mInitialLoad = false;
-                    } else {
-                        //Data retrieved by scheduled job, present user option to refresh
-                        showSnackBar();
-                    }
+                    //Data retrieved by scheduled job, present user option to refresh
+                    showSnackBar();
                 }
             }
         });
@@ -197,13 +190,10 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
 
         mArticleListAdapter.setArticleList(mArticleList);
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                if (NetworkUtils.isConnected(NewsFeedActivity.this)) {
-                    mUserRefresh = true;
-                    refreshList();
-                }
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (NetworkUtils.isConnected(NewsFeedActivity.this)) {
+                mUserRefresh = true;
+                refreshList();
             }
         });
     }
@@ -230,12 +220,7 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
             mSnackbar.dismiss();
         }
         mSnackbar = Snackbar.make(mParentLayout, R.string.new_headlines_available, Snackbar.LENGTH_LONG)
-                .setAction(R.string.refresh_action, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        updateList();
-                    }
-                });
+                .setAction(R.string.refresh_action, v -> updateList());
         mSnackbar.show();
     }
 
@@ -270,20 +255,12 @@ public class NewsFeedActivity extends AppCompatActivity implements ArticleListAd
         LayoutInflater inflater = getLayoutInflater();
 
         builder.setView(inflater.inflate(R.layout.alert_dialog_no_internet, null))
-                .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
-                        finish();
-                        startActivity(getIntent());
-                    }
+                .setPositiveButton(R.string.retry, (dialog, which) -> {
+                    //Reload activity solution found @ https://stackoverflow.com/questions/3053761/reload-activity-in-android
+                    finish();
+                    startActivity(getIntent());
                 })
-                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mAlertDialog.cancel();
-                    }
-                });
+                .setNegativeButton(R.string.close, (dialog, which) -> mAlertDialog.cancel());
 
         mAlertDialog = builder.create();
         mAlertDialog.show();

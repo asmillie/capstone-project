@@ -58,7 +58,7 @@ dependencies {
     implementation "android.arch.persistence.room:common:$arch_version"
     annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
     //Work Manager
-    def work_version = "1.0.0"
+    def work_version = "1.0.1"
     implementation "android.arch.work:work-runtime:$work_version"
 
     //Butterknife View Binding Library

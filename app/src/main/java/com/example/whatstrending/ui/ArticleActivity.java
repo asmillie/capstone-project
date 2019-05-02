@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -57,7 +56,9 @@ public class ArticleActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -136,15 +137,12 @@ public class ArticleActivity extends AppCompatActivity {
     private void initViewModel() {
         ArticleViewModel viewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
         viewModel.setArticleCategory(mArticleCategory);
-        viewModel.getArticleIds().observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(@Nullable List<Article> articles) {
-                if (articles != null) {
-                    mArticleIds = articles;
-                    mPagerAdapter.notifyDataSetChanged();
-                    updatePager();
-                    Log.i(TAG, "Observed change to article ids list, contains " + mArticleIds.size() + " items");
-                }
+        viewModel.getArticleIds().observe(this, articles -> {
+            if (articles != null) {
+                mArticleIds = articles;
+                mPagerAdapter.notifyDataSetChanged();
+                updatePager();
+                Log.i(TAG, "Observed change to article ids list, contains " + mArticleIds.size() + " items");
             }
         });
     }

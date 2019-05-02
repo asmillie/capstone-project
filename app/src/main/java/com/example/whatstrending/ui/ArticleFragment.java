@@ -1,23 +1,16 @@
 package com.example.whatstrending.ui;
 
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -138,17 +131,18 @@ public class ArticleFragment extends Fragment {
     }
 
     private void initViewModel() {
+        if (getActivity().getApplication() == null) {
+            Log.e(TAG, "Error initializing View Model, attempt to get the host activity application returned null.");
+            return;
+        }
         ArticleFragmentViewModelFactory factory = new ArticleFragmentViewModelFactory(getActivity().getApplication(), mArticleId);
 
         mViewModel = ViewModelProviders.of(this, factory).get(ArticleFragmentViewModel.class);
-        mViewModel.getArticle().observe(this, new Observer<Article>() {
-            @Override
-            public void onChanged(@Nullable Article article) {
-                if (article != null) {
-                    Log.i(TAG, "Observed change to article for article id " + mArticleId);
-                    mArticle = article;
-                    populateUI();
-                }
+        mViewModel.getArticle().observe(this, article -> {
+            if (article != null) {
+                Log.i(TAG, "Observed change to article for article id " + mArticleId);
+                mArticle = article;
+                populateUI();
             }
         });
     }

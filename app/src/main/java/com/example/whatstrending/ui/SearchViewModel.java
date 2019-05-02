@@ -11,7 +11,7 @@ import com.example.whatstrending.data.Article;
 
 import java.util.List;
 
-public class SearchViewModel extends AndroidViewModel {
+class SearchViewModel extends AndroidViewModel {
 
     private final AppRepository mAppRepository;
     private LiveData<List<Article>> mArticleSearchResults;
@@ -28,7 +28,7 @@ public class SearchViewModel extends AndroidViewModel {
         return mArticleSearchResults;
     }
 
-    public void refreshSearchResults() {
+    private void refreshSearchResults() {
         mArticleSearchResults = mAppRepository.getAllArticlesByCategory(Constants.ARTICLE_CATEGORY_SEARCH_RESULT);
     }
 }

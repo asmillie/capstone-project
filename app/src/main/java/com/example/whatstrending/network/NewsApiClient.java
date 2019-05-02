@@ -14,7 +14,7 @@ public class NewsApiClient {
     private static final String NEWS_API_BASE_URL = "https://newsapi.org/v2/";
 
     private static NewsApiClient mInstance;
-    private Retrofit mRetrofit;
+    private final Retrofit mRetrofit;
 
     private NewsApiClient() {
         mRetrofit = new Retrofit.Builder()
