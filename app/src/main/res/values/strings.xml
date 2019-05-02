@@ -12,6 +12,7 @@
 
     <!-- Article Activity -->
     <string name="view_original_article_fab">View Original Article</string>
+    <string name="article_activity_title">View Article</string>
 
     <!-- App Widget -->
     <string name="widget_list_description">Latest Headlines</string>

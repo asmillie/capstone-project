@@ -58,6 +58,7 @@ public class ArticleActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.article_activity_title));
         }
 
         if (savedInstanceState == null) {
