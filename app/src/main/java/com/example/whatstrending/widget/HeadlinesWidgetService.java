@@ -63,6 +63,7 @@ class HeadlinesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
         Bundle extras = new Bundle();
         extras.putInt(Constants.EXTRA_ARTICLE_ID, article.getId());
+        extras.putString(Constants.EXTRA_CATEGORY, Constants.ARTICLE_CATEGORY_HEADLINE);
 
         Intent intent = new Intent();
         intent.putExtras(extras);
