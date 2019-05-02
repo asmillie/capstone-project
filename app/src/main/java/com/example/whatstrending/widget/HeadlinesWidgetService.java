@@ -36,7 +36,11 @@ class HeadlinesRemoteViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     @Override
     public void onDataSetChanged() {
-        mArticleList = mAppRepository.getTopHeadlines(Constants.WIDGET_HEADLINE_LIMIT);
+        List<Article> articleList = mAppRepository.getTopHeadlines(Constants.WIDGET_HEADLINE_LIMIT);
+        if (articleList == null || articleList.size() == 0) {
+            mAppRepository.refreshHeadlines();
+        }
+        mArticleList = articleList;
     }
 
     @Override
