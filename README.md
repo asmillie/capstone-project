@@ -2,7 +2,7 @@
 Capstone Project for Udacity Android Developer Nanodegree Program
 
 A simple news reader app for Android that displays the latest technology headlines in the US 
-from NewsApi.org. Also includes a search feature to search all US technology headlnes and a 
+from NewsApi.org. Also includes a search feature to search all US technology headlines and a 
 home screen widget.
 
 # API Usage
