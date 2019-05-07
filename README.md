@@ -27,3 +27,9 @@ RELEASE_KEY_ALIAS=whatstrending
 RELEASE_KEY_PASSWORD=password
 ```
 
+# Firebase
+Firebase analytics are utilized by this app so a new Firebase project will need to be created 
+and the **google-services.json** file provided during project creation included in the app files.
+
+For detailed instructions visit the official documention here: 
+https://firebase.google.com/docs/android/setup (Option 1) 
