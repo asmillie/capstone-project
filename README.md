@@ -32,4 +32,4 @@ Firebase analytics are utilized by this app so a new Firebase project will need 
 and the **google-services.json** file provided during project creation included in the app files.
 
 For detailed instructions visit the official documention here: 
-https://firebase.google.com/docs/android/setup (Option 1) 
+https://firebase.google.com/docs/android/setup (Option 1, Steps 1-3) 
